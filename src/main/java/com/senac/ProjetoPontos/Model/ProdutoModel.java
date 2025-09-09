@@ -1,11 +1,14 @@
 package com.senac.ProjetoPontos.Model;
 
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -18,14 +21,14 @@ public class ProdutoModel {
 	@Column(nullable=false)
 	private String nomeProduto;
     @Column(nullable=false)
-	private String descricaoProduto;
-    @Column(nullable=false)
 	private int valor;
     @Column(nullable=false)
 	private String fotoProduto;
     @ManyToOne
 	private UsuarioJuridicoModel usuarioJuridico;
-
+    @OneToMany(mappedBy = "produto")
+    private List<ResgateModel> resgate;
+    
     public int getId() {
         return id;
     }
@@ -40,14 +43,6 @@ public class ProdutoModel {
 
     public void setNomeProduto(String nomeProduto) {
         this.nomeProduto = nomeProduto;
-    }
-
-    public String getDescricaoProduto() {
-        return descricaoProduto;
-    }
-
-    public void setDescricaoProduto(String descricaoProduto) {
-        this.descricaoProduto = descricaoProduto;
     }
 
     public int getValor() {

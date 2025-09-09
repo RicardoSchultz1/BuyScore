@@ -21,6 +21,8 @@ public class UsuarioJuridicoModel {
 	@Column(nullable=false)
 	private String descricaoLoja;
     @Column(nullable=false, unique = true)
+    private String seguimento;
+    @Column(nullable=false, unique = true)
 	private long cnpj;
     @OneToMany(mappedBy = "usuarioJuridico")
 	private List<ProdutoModel> produtos;
@@ -65,6 +67,19 @@ public class UsuarioJuridicoModel {
 
     public void setUsuario(UsuarioModel usuario) {
         this.usuario = usuario;
+    }
+    public long getCnpj() {
+        return cnpj;
+    }
+    public void setCnpj(long cnpj) {
+        this.cnpj = cnpj;
+    }
+    public String getSeguimento() {
+        return seguimento;
+    }
+
+    public void setSeguimento(String seguimento) {
+        this.seguimento = seguimento;
     }
 
 }
