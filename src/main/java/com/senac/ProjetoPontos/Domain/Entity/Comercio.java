@@ -1,0 +1,78 @@
+package com.senac.ProjetoPontos.Domain.Entity;
+
+import java.util.UUID;
+
+public class Comercio {
+    
+    private UUID id;
+    private Usuario usuario;
+    private String CNPJ;
+    private String razaoSocial;
+    private String descricao;
+    private String seguimento;
+    private Usuario matriz;
+    private Endereco endereco;
+
+    public Comercio(UUID id, Usuario usuario, String CNPJ, String razaoSocial, String descricao, String seguimento, Usuario matriz, Endereco endereco) {
+        this.id = id;
+        this.usuario = usuario;
+        this.CNPJ = CNPJ;
+        this.razaoSocial = razaoSocial;
+        this.descricao = descricao;
+        this.seguimento = seguimento;
+        this.matriz = matriz;
+        this.endereco = endereco;
+    }
+
+    public Comercio() { }
+
+    public UUID getId() {
+        return id;
+    }
+    public void setId(UUID id) {
+        this.id = id;
+    }
+    public Usuario getUsuario() {
+        return usuario;
+    }
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+    public String getCNPJ() {
+        return CNPJ;
+    }
+    public void setCNPJ(String cNPJ) {
+        CNPJ = cNPJ;
+    }
+    public String getRazaoSocial() {
+        return razaoSocial;
+    }
+    public void setRazaoSocial(String razaoSocial) {
+        this.razaoSocial = razaoSocial;
+    }
+    public String getDescricao() {
+        return descricao;
+    }
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+    public String getSeguimento() {
+        return seguimento;
+    }
+    public void setSeguimento(String seguimento) {
+        this.seguimento = seguimento;
+    }
+    public Usuario getMatriz() {
+        return matriz;
+    }
+    public void setMatriz(Usuario matriz) {
+        this.matriz = matriz;
+    }
+    public Endereco getEndereco() {
+        return endereco;
+    }
+    public void setEndereco(Endereco endereco) {
+        this.endereco = endereco;
+    }
+    
+}
