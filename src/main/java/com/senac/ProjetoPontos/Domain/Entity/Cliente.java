@@ -7,12 +7,14 @@ public class Cliente {
 
     private UUID id;
     private Usuario usuario;
+    private int pontos;
     private List<Comercio> comerciosFavoritos;
     private List<Produto> produtosFavoritos;
 
-    public Cliente(UUID id, Usuario usuario, List<Comercio> comerciosFavoritos, List<Produto> produtosFavoritos) {
+    public Cliente(UUID id, Usuario usuario, int pontos, List<Comercio> comerciosFavoritos, List<Produto> produtosFavoritos) {
         this.id = id;
         this.usuario = usuario;
+        this.pontos = pontos;
         this.comerciosFavoritos = comerciosFavoritos;
         this.produtosFavoritos = produtosFavoritos;
     }
@@ -42,6 +44,12 @@ public class Cliente {
     }
     public void setProdutosFavoritos(List<Produto> produtosFavoritos) {
         this.produtosFavoritos = produtosFavoritos;
+    }
+    public int getPontos() {
+        return pontos;
+    }
+    public void setPontos(int pontos) {
+        this.pontos = pontos;
     }
 
 }

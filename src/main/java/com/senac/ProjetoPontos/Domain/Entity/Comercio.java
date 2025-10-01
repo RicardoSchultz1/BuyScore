@@ -11,9 +11,8 @@ public class Comercio {
     private String descricao;
     private String seguimento;
     private Usuario matriz;
-    private Endereco endereco;
 
-    public Comercio(UUID id, Usuario usuario, String CNPJ, String razaoSocial, String descricao, String seguimento, Usuario matriz, Endereco endereco) {
+    public Comercio(UUID id, Usuario usuario, String CNPJ, String razaoSocial, String descricao, String seguimento, Usuario matriz) {
         this.id = id;
         this.usuario = usuario;
         this.CNPJ = CNPJ;
@@ -21,7 +20,6 @@ public class Comercio {
         this.descricao = descricao;
         this.seguimento = seguimento;
         this.matriz = matriz;
-        this.endereco = endereco;
     }
 
     public Comercio() { }
@@ -67,12 +65,6 @@ public class Comercio {
     }
     public void setMatriz(Usuario matriz) {
         this.matriz = matriz;
-    }
-    public Endereco getEndereco() {
-        return endereco;
-    }
-    public void setEndereco(Endereco endereco) {
-        this.endereco = endereco;
     }
     
 }

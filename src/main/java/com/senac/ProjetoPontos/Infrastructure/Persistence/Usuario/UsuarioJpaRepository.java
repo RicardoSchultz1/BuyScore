@@ -1,4 +1,4 @@
-package com.senac.ProjetoPontos.Infrastructure.Persistence;
+package com.senac.ProjetoPontos.Infrastructure.Persistence.Usuario;
 
 import java.util.Optional;
 import java.util.UUID;

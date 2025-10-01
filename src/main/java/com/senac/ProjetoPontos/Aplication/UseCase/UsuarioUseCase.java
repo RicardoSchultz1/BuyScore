@@ -6,7 +6,7 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 import com.senac.ProjetoPontos.Domain.Entity.Usuario;
-import com.senac.ProjetoPontos.Domain.Exception.UsuarioNaoEncontradoException;
+import com.senac.ProjetoPontos.Domain.Exception.NaoEncontradoException;
 import com.senac.ProjetoPontos.Domain.Repository.UsuarioRepository;
 
 @Service
@@ -30,7 +30,7 @@ public class UsuarioUseCase {
     public Usuario buscarUsuario(UUID id) {
         Usuario usuario = usuarioRepository.findById(id);
         if (usuario == null) {
-            throw new UsuarioNaoEncontradoException("" + id);
+            throw new NaoEncontradoException("" + id);
         }
         return usuario;
     }

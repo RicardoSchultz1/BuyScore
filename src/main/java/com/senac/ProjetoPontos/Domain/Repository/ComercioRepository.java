@@ -7,7 +7,7 @@ import com.senac.ProjetoPontos.Domain.Entity.Comercio;
 
 public interface ComercioRepository {
 
-    void save(Comercio comercio);
+    Comercio save(Comercio comercio);
     Comercio findById(UUID id);
     List<Comercio> findAll();
     void update(Comercio comercio);

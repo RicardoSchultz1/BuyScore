@@ -1,15 +1,10 @@
-package com.senac.ProjetoPontos.Infrastructure.Persistence;
+package com.senac.ProjetoPontos.Infrastructure.Persistence.Usuario;
 
 import java.util.UUID;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.senac.ProjetoPontos.Infrastructure.Persistence.Endereco.EnderecoEntity;
 
-import jakarta.persistence.Table;
-
+import jakarta.persistence.*;
 
 @Entity
 @Table(name="Usuario")
@@ -24,21 +19,22 @@ public class UsuarioEntity {
 	private String email;
 	@Column(nullable= false)
 	private String senha;
-	//@OneToOne(mappedBy = "usuario")
-	//private EnderecoEntity endereco;
+	@OneToOne
+    @JoinColumn(name = "id_endereco", referencedColumnName = "id", unique = true)
+    private EnderecoEntity endereco;
 	@Column(nullable= false)
 	private int perfilUsuario;
 	@Column(nullable= false)
 	private String fotoUsuario;
 
-    // Construtor padrão exigido pelo JPA
     protected UsuarioEntity() {}
 
-    public UsuarioEntity(UUID id, String nome, String email, String senha, int perfilUsuario, String fotoUsuario) {
+    public UsuarioEntity(UUID id, String nome, String email, String senha, EnderecoEntity endereco, int perfilUsuario, String fotoUsuario) {
 		this.id = id;
 		this.nome = nome;
 		this.email = email;
 		this.senha = senha;
+		this.endereco = endereco;
 		this.perfilUsuario = perfilUsuario;
 		this.fotoUsuario = fotoUsuario;
 	}
@@ -80,11 +76,11 @@ public class UsuarioEntity {
     public void setFotoUsuario(String fotoUsuario) {
         this.fotoUsuario = fotoUsuario;
     }
-	/*public EnderecoModel getEndereco() {
+	public EnderecoEntity getEndereco() {
 		return endereco;
 	}
-	public void setEndereco(EnderecoModel endereco) {
+	public void setEndereco(EnderecoEntity endereco) {
 		this.endereco = endereco;
 	}
-    */
+
 }

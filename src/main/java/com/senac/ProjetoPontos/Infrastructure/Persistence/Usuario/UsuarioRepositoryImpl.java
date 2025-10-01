@@ -1,4 +1,4 @@
-package com.senac.ProjetoPontos.Infrastructure.Persistence;
+package com.senac.ProjetoPontos.Infrastructure.Persistence.Usuario;
 
 import java.util.UUID;
 
@@ -6,7 +6,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Repository;
 
 import com.senac.ProjetoPontos.Domain.Entity.Usuario;
-import com.senac.ProjetoPontos.Domain.Exception.UsuarioNaoEncontradoException;
+import com.senac.ProjetoPontos.Domain.Exception.NaoEncontradoException;
 import com.senac.ProjetoPontos.Domain.Repository.UsuarioRepository;
 
 @Repository
@@ -24,7 +24,7 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
     public Usuario findById(UUID id) {
         return jpaRepository.findById(id)
                 .map(entity -> mapper.map(entity, Usuario.class))
-                .orElseThrow(() -> new UsuarioNaoEncontradoException(id.toString()));
+                .orElseThrow(() -> new NaoEncontradoException(id.toString()));
     }
 
     @Override

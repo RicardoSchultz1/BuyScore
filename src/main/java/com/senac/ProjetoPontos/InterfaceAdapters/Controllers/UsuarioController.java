@@ -11,7 +11,7 @@ import com.senac.ProjetoPontos.Aplication.UseCase.UsuarioUseCase;
 import com.senac.ProjetoPontos.Domain.Entity.Usuario;
 
 @RestController
-@RequestMapping("/usuarios")
+@RequestMapping("/usuario")
 public class UsuarioController {
 
     private final UsuarioUseCase useCase;

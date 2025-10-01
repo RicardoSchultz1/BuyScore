@@ -7,7 +7,7 @@ import com.senac.ProjetoPontos.Domain.Entity.Cliente;
 
 public interface ClienteRepository {
     
-    void save(Cliente cliente);
+    Cliente save(Cliente cliente);
     Cliente findById(UUID id);
     List<Cliente> findAll();
     void update(Cliente cliente);

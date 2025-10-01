@@ -7,7 +7,7 @@ import com.senac.ProjetoPontos.Domain.Entity.Endereco;
 
 public interface EnderecoRepository {
 
-    void save(Endereco endereco);
+    Endereco save(Endereco endereco);
     Endereco findById(UUID id);
     List<Endereco> findAll();
     void update(Endereco endereco);

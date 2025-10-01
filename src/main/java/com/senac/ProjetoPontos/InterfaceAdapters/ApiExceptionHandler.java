@@ -5,13 +5,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.senac.ProjetoPontos.Domain.Exception.UsuarioNaoEncontradoException;
+import com.senac.ProjetoPontos.Domain.Exception.NaoEncontradoException;
 
 @RestControllerAdvice
 public class ApiExceptionHandler {
 
-    @ExceptionHandler(UsuarioNaoEncontradoException.class)
-    public ResponseEntity<ErrorResponse> handleUsuarioNaoEncontrado(UsuarioNaoEncontradoException ex) {
+    @ExceptionHandler(NaoEncontradoException.class)
+    public ResponseEntity<ErrorResponse> handleUsuarioNaoEncontrado(NaoEncontradoException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                              .body(new ErrorResponse("USUARIO_NAO_ENCONTRADO", ex.getMessage()));
     }
