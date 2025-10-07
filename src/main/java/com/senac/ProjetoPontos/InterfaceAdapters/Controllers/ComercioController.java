@@ -24,13 +24,11 @@ public class ComercioController {
         this.usuarioUseCase = usuarioUseCase;
     }
 
-    // Buscar comercio por ID
     @GetMapping("/{id}")
     public Comercio buscarComercio(@PathVariable UUID id) {
         return useCase.buscarComercio(id);
     }
 
-    // Criar comercio
     @PostMapping
     public ResponseEntity<Comercio> criarComercio(@RequestBody ComercioRequest request) {
         Usuario usuario = usuarioUseCase.buscarUsuario(request.getUsuarioId());

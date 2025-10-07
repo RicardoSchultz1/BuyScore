@@ -25,8 +25,8 @@ public class ComercioRequest {
         return CNPJ;
     }
 
-    public void setCNPJ(String cNPJ) {
-        CNPJ = cNPJ;
+    public void setCNPJ(String CNPJ) {
+        this.CNPJ = CNPJ;
     }
 
     public String getRazaoSocial() {

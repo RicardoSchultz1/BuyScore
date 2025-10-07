@@ -11,7 +11,6 @@ public class BeanConfig {
     @Bean
     public ModelMapper modelMapper() {
         ModelMapper mapper = new ModelMapper();
-        // Prefer field-based mapping and allow access to private/protected fields
         mapper.getConfiguration()
             .setFieldMatchingEnabled(true)
             .setFieldAccessLevel(AccessLevel.PRIVATE)
