@@ -28,8 +28,8 @@ public class ComercioEntity {
     private String descricao;
     @Column
     private String seguimento;
-    @OneToOne
-    @JoinColumn(name = "id_matriz", referencedColumnName = "id", unique = true)
+    @ManyToOne
+    @JoinColumn(name = "id_matriz", referencedColumnName = "id")
     private UsuarioEntity matriz;
     @OneToMany(mappedBy = "comercio")
     private List<ProdutoEntity> produtos;

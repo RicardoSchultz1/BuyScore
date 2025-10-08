@@ -43,6 +43,11 @@ public class ComercioRepositoryImpl implements ComercioRepository {
     }
 
     @Override
+    public boolean existsByUsuarioId(UUID usuarioId) {
+        return jpaRepository.existsByUsuario_Id(usuarioId);
+    }
+
+    @Override
     public void update(Comercio comercio) {
         if (jpaRepository.existsById(comercio.getId())) {
             ComercioEntity entity = mapper.map(comercio, ComercioEntity.class);
