@@ -39,9 +39,9 @@ public class Usuario {
         this.perfilUsuario = perfilUsuario;
         this.fotoUsuario = fotoUsuario;
     }
-
-    public Usuario() { }
     
+    protected Usuario() { }
+
     public String getNome() {
         return nome;
     }

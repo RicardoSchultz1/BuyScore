@@ -10,6 +10,7 @@ public interface ComercioRepository {
     Comercio save(Comercio comercio);
     Comercio findById(UUID id);
     List<Comercio> findAll();
+    boolean existsByUsuarioId(UUID usuarioId);
     void update(Comercio comercio);
     void delete(UUID id);
 }

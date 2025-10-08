@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.senac.ProjetoPontos.Domain.Exception.NaoEncontradoException;
+import org.springframework.dao.DataIntegrityViolationException;
 
 @RestControllerAdvice
 public class ApiExceptionHandler {
@@ -20,6 +21,12 @@ public class ApiExceptionHandler {
     public ResponseEntity<ErrorResponse> handleGeneric(Exception ex) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                              .body(new ErrorResponse("ERRO_INTERNO", "Ocorreu um erro inesperado"));
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ErrorResponse> handleDataIntegrity(DataIntegrityViolationException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                             .body(new ErrorResponse("VIOLACAO_INTEGRIDADE", "Operação viola restrição do banco de dados"));
     }
 
     record ErrorResponse(String code, String message) {}

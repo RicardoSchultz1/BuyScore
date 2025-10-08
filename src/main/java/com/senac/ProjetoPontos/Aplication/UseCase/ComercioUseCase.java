@@ -15,7 +15,7 @@ import com.senac.ProjetoPontos.Domain.Repository.UsuarioRepository;
 public class ComercioUseCase {
     
     private final ComercioRepository comercioRepository;
-    private final UsuarioRepository usuarioRepository;
+    private     final UsuarioRepository usuarioRepository;
 
     public ComercioUseCase(ComercioRepository comercioRepository, UsuarioRepository usuarioRepository) {
         this.comercioRepository = comercioRepository;
@@ -23,6 +23,9 @@ public class ComercioUseCase {
     }
 
     public Comercio salvarComercioEntity(Usuario usuario, String CNPJ, String razaoSocial, String descricao, String seguimento, Usuario matriz) {
+        if (comercioRepository.existsByUsuarioId(usuario.getId())) {
+            throw new IllegalArgumentException("Usuário já possui comércio");
+        }
         Comercio comercio = new Comercio(UUID.randomUUID(), usuario, CNPJ, razaoSocial, descricao, seguimento, matriz);
         comercioRepository.save(comercio);
         return comercio;

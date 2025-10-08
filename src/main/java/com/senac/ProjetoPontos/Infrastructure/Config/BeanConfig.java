@@ -1,6 +1,7 @@
 package com.senac.ProjetoPontos.Infrastructure.Config;
 
 import org.modelmapper.ModelMapper;
+import org.modelmapper.config.Configuration.AccessLevel;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -9,6 +10,11 @@ public class BeanConfig {
     
     @Bean
     public ModelMapper modelMapper() {
-    return new ModelMapper();
+        ModelMapper mapper = new ModelMapper();
+        mapper.getConfiguration()
+            .setFieldMatchingEnabled(true)
+            .setFieldAccessLevel(AccessLevel.PRIVATE)
+            .setMethodAccessLevel(AccessLevel.PRIVATE);
+        return mapper;
     }
 }
