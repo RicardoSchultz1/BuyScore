@@ -7,20 +7,25 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 import com.senac.ProjetoPontos.Domain.Entity.Comercio;
+import com.senac.ProjetoPontos.Domain.Entity.Endereco;
 import com.senac.ProjetoPontos.Domain.Entity.Usuario;
 import com.senac.ProjetoPontos.Domain.Exception.NaoEncontradoException;
 import com.senac.ProjetoPontos.Domain.Repository.ComercioRepository;
+import com.senac.ProjetoPontos.Domain.Repository.EnderecoRepository;
 import com.senac.ProjetoPontos.Domain.Repository.UsuarioRepository;
 
 @Service
 public class ComercioUseCase {
     
     private final ComercioRepository comercioRepository;
-    private     final UsuarioRepository usuarioRepository;
+    private final UsuarioRepository usuarioRepository;
+    private final EnderecoRepository enderecoRepository;
 
-    public ComercioUseCase(ComercioRepository comercioRepository, UsuarioRepository usuarioRepository) {
+
+    public ComercioUseCase(ComercioRepository comercioRepository, UsuarioRepository usuarioRepository, EnderecoRepository enderecoRepository) {
         this.comercioRepository = comercioRepository;
         this.usuarioRepository = usuarioRepository;
+        this.enderecoRepository = enderecoRepository;
     }
 
     public Comercio salvarComercioEntity(Usuario usuario, String cnpj, String razaoSocial, String descricao, String seguimento, Usuario matriz) {
@@ -31,18 +36,26 @@ public class ComercioUseCase {
             throw new IllegalArgumentException("Usuário não possui perfil de comércio");
         }
         try {
-            usuarioRepository.save(usuario);
-        } catch (Exception e) {
-            throw new RuntimeException("Erro ao salvar usuário", e);
-        }
-       
-    Comercio comercio = new Comercio(UUID.randomUUID(), usuarioRepository.findByEmail(usuario.getEmail()), cnpj, razaoSocial, descricao, seguimento, matriz);
-        try {
-            comercioRepository.save(comercio);
+            Endereco iden = enderecoRepository.save(usuario.getEndereco());
+
+            try {
+            usuario.setEndereco(iden);    
+            Usuario idus =usuarioRepository.save(usuario);
+
+                try {
+                    Comercio comercio = new Comercio(null, idus, cnpj, razaoSocial, descricao, seguimento, matriz);
+                    return comercioRepository.save(comercio);
         } catch (Exception e) {
             throw new RuntimeException("Erro ao salvar comércio", e);
         }
-        return comercio;
+
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao salvar endereço", e);
+        }
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao salvar usuário", e);
+        }
+        
     }
     public Comercio salvarComercioUser(Comercio comercio, Usuario usuario) {
         if (comercioRepository.existsByUsuarioId(comercio.getUsuario().getId())) {

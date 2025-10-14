@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import com.senac.ProjetoPontos.Aplication.UseCase.ComercioUseCase;
 import com.senac.ProjetoPontos.Aplication.UseCase.UsuarioUseCase;
 import com.senac.ProjetoPontos.Domain.Entity.Comercio;
+import com.senac.ProjetoPontos.Domain.Entity.Endereco;
 import com.senac.ProjetoPontos.Domain.Entity.Usuario;
 import com.senac.ProjetoPontos.InterfaceAdapters.DTO.ComercioUserRequest;
 
@@ -31,7 +32,8 @@ public class ComercioController {
 
     @PostMapping
     public ResponseEntity<Comercio> criarComercio(@RequestBody ComercioUserRequest request) {
-        Usuario usuario = new Usuario(UUID.randomUUID(), request.getNome(), request.getEmail(), request.getSenha(), request.getPerfilUsuario(), request.getFotoUsuario(), request.getIdEndereco());
+        Endereco endereco = new Endereco(null, request.getCep(), request.getLogradouro(), request.getComplemento(), request.getBairro(), request.getCidade(), request.getNumero(), request.getUf());
+        Usuario usuario = new Usuario(null, request.getNome(), request.getEmail(), request.getSenha(), request.getPerfilUsuario(), request.getFotoUsuario(), endereco);
         Usuario matriz = null;
         if (request.getMatrizId() != null && !request.getMatrizId().trim().isEmpty()) {
             var found = useCase.findByCnpj(request.getMatrizId().trim());

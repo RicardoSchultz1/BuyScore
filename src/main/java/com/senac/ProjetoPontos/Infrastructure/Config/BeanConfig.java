@@ -4,6 +4,7 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.config.Configuration.AccessLevel;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.client.RestTemplate;
 
 @Configuration
 public class BeanConfig {
@@ -16,5 +17,10 @@ public class BeanConfig {
             .setFieldAccessLevel(AccessLevel.PRIVATE)
             .setMethodAccessLevel(AccessLevel.PRIVATE);
         return mapper;
+    }
+
+    @Bean
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
     }
 }

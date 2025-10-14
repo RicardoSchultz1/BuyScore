@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
+import com.senac.ProjetoPontos.Domain.Entity.Endereco;
 import com.senac.ProjetoPontos.Domain.Entity.Usuario;
 import com.senac.ProjetoPontos.Domain.Exception.NaoEncontradoException;
 import com.senac.ProjetoPontos.Domain.Repository.UsuarioRepository;
@@ -18,8 +19,8 @@ public class UsuarioUseCase {
         this.usuarioRepository = usuarioRepository;
     }
 
-    public Usuario salvarUsuarioEntity(String nome, String email, String senha, int perfilUsuario, String fotoPerfil, UUID idEndereco) {
-        Usuario usuario = new Usuario(UUID.randomUUID(), nome, email, senha, perfilUsuario, fotoPerfil, idEndereco);
+    public Usuario salvarUsuarioEntity(String nome, String email, String senha, int perfilUsuario, String fotoPerfil, Endereco endereco) {
+        Usuario usuario = new Usuario(null, nome, email, senha, perfilUsuario, fotoPerfil, endereco);
         if(usuarioRepository.findByEmail(email) != null) {
             throw new IllegalArgumentException("Email já cadastrado");
         }
