@@ -10,9 +10,9 @@ public class Usuario {
     private String senha;
     private int perfilUsuario;
     private String fotoUsuario;
-    private UUID idEndereco;
+    private Endereco endereco;
 
-    public Usuario(UUID id, String nome, String email, String senha, int perfilUsuario, String fotoUsuario, UUID idEndereco) {
+    public Usuario(UUID id, String nome, String email, String senha, int perfilUsuario, String fotoUsuario, Endereco endereco) {
 
         if (nome == null || nome.isEmpty()) {
             throw new IllegalArgumentException("Nome não pode ser nulo ou vazio");
@@ -30,7 +30,7 @@ public class Usuario {
             throw new IllegalArgumentException("Perfil de usuário inválido");
         }
         this.id = id;
-        this.idEndereco = idEndereco;
+        this.endereco = endereco;
         this.nome = nome;
         this.email = email;
         this.senha = senha;
@@ -78,11 +78,11 @@ public class Usuario {
     public void setFotoUsuario(String fotoUsuario) {
         this.fotoUsuario = fotoUsuario;
     }
-    public UUID getIdEndereco() {
-        return idEndereco;
+    public Endereco getEndereco() {
+        return endereco;
     }
-    public void setIdEndereco(UUID idEndereco) {
-        this.idEndereco = idEndereco;
+    public void setEndereco(Endereco endereco) {
+        this.endereco = endereco;
     }
 
 }
