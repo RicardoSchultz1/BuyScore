@@ -12,6 +12,8 @@ import com.senac.ProjetoPontos.Domain.Entity.Comercio;
 import com.senac.ProjetoPontos.Domain.Entity.Endereco;
 import com.senac.ProjetoPontos.Domain.Entity.Usuario;
 import com.senac.ProjetoPontos.InterfaceAdapters.DTO.ComercioUserRequest;
+import com.senac.ProjetoPontos.InterfaceAdapters.DTO.ComercioWithTokenResponse;
+import com.senac.ProjetoPontos.Infrastructure.Security.JwtUtil;
 
 @RestController
 @RequestMapping("/comercio")
@@ -19,10 +21,12 @@ public class ComercioController {
     
     private final ComercioUseCase useCase;
     private final UsuarioUseCase usuarioUseCase;
+    private final JwtUtil jwtUtil;
 
-    public ComercioController(ComercioUseCase useCase, UsuarioUseCase usuarioUseCase) {
+    public ComercioController(ComercioUseCase useCase, UsuarioUseCase usuarioUseCase, JwtUtil jwtUtil) {
         this.useCase = useCase;
         this.usuarioUseCase = usuarioUseCase;
+        this.jwtUtil = jwtUtil;
     }
 
     @GetMapping("/{id}")
@@ -31,7 +35,7 @@ public class ComercioController {
     }
 
     @PostMapping
-    public ResponseEntity<Comercio> criarComercio(@RequestBody ComercioUserRequest request) {
+    public ResponseEntity<ComercioWithTokenResponse> criarComercio(@RequestBody ComercioUserRequest request) {
         Endereco endereco = new Endereco(null, request.getCep(), request.getLogradouro(), request.getComplemento(), request.getBairro(), request.getCidade(), request.getNumero(), request.getUf());
         Usuario usuario = new Usuario(null, request.getNome(), request.getEmail(), request.getSenha(), request.getPerfilUsuario(), request.getFotoUsuario(), endereco);
         Usuario matriz = null;
@@ -44,7 +48,10 @@ public class ComercioController {
         }
         
         Comercio salvo = useCase.salvarComercioEntity(usuario, request.getCnpj(), request.getRazaoSocial(), request.getDescricao(), request.getSeguimento(), matriz);
-        return ResponseEntity.ok(salvo);
+        // gerar token para o usuário recém-criado
+        String token = jwtUtil.generateToken(salvo.getUsuario().getEmail());
+        ComercioWithTokenResponse resp = new ComercioWithTokenResponse(salvo, token);
+        return ResponseEntity.ok(resp);
     }
 
    /*  @PostMapping("/saveComercio")
