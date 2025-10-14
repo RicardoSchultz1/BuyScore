@@ -1,5 +1,6 @@
 package com.senac.ProjetoPontos.Infrastructure.Persistence.Comercio;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import org.modelmapper.ModelMapper;
@@ -59,4 +60,10 @@ public class ComercioRepositoryImpl implements ComercioRepository {
     public void delete(UUID id) {
         jpaRepository.deleteById(id);
     } 
+    
+    @Override
+    public Optional<Comercio> findByCnpj(String cnpj) {
+        return jpaRepository.findByCnpj(cnpj)
+                .map(entity -> mapper.map(entity, Comercio.class));
+    }
 }

@@ -10,7 +10,7 @@ import com.senac.ProjetoPontos.Aplication.UseCase.ComercioUseCase;
 import com.senac.ProjetoPontos.Aplication.UseCase.UsuarioUseCase;
 import com.senac.ProjetoPontos.Domain.Entity.Comercio;
 import com.senac.ProjetoPontos.Domain.Entity.Usuario;
-import com.senac.ProjetoPontos.InterfaceAdapters.DTOs.ComercioRequest;
+import com.senac.ProjetoPontos.InterfaceAdapters.DTO.ComercioUserRequest;
 
 @RestController
 @RequestMapping("/comercio")
@@ -30,16 +30,30 @@ public class ComercioController {
     }
 
     @PostMapping
-    public ResponseEntity<Comercio> criarComercio(@RequestBody ComercioRequest request) {
-        Usuario usuario = usuarioUseCase.buscarUsuario(request.getUsuarioId());
+    public ResponseEntity<Comercio> criarComercio(@RequestBody ComercioUserRequest request) {
+        Usuario usuario = new Usuario(UUID.randomUUID(), request.getNome(), request.getEmail(), request.getSenha(), request.getPerfilUsuario(), request.getFotoUsuario(), request.getIdEndereco());
         Usuario matriz = null;
-        if (request.getMatrizId() != null) {
-            matriz = usuarioUseCase.buscarUsuario(request.getMatrizId());
-        }
+        if (request.getMatrizId() != null && !request.getMatrizId().trim().isEmpty()) {
+            var found = useCase.findByCnpj(request.getMatrizId().trim());
+            if (found != null && found.isPresent()) {
 
-        Comercio salvo = useCase.salvarComercioEntity(usuario, request.getCNPJ(), request.getRazaoSocial(), request.getDescricao(), request.getSeguimento(), matriz);
+                matriz = usuarioUseCase.buscarUsuario(found.get().getUsuario().getId());
+            }
+        }
+        
+        Comercio salvo = useCase.salvarComercioEntity(usuario, request.getCnpj(), request.getRazaoSocial(), request.getDescricao(), request.getSeguimento(), matriz);
         return ResponseEntity.ok(salvo);
     }
+
+   /*  @PostMapping("/saveComercio")
+    public ResponseEntity<Comercio> salvarComercio(@RequestBody ComercioUserRequest comercioUser) {
+        //Ainda vai precisar salvar o endereço antes do usuario
+        Usuario usuario = new Usuario(comercioUser.getNome(), comercioUser.getEmail(), comercioUser.getSenha(), comercioUser.getPerfilUsuario(), comercioUser.getFotoUsuario(), comercioUser.getIdEndereco());
+
+        Comercio salvo = useCase.salvarComercioEntity(comercioUser, );
+        return ResponseEntity.ok(salvo);
+    } 
+    */    
 
     @GetMapping("/all")
     public ResponseEntity<List<Comercio>> findAll() {
