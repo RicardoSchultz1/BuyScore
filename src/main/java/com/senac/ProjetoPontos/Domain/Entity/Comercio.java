@@ -6,16 +6,16 @@ public class Comercio {
     
     private UUID id;
     private Usuario usuario;
-    private String CNPJ;
+    private String cnpj;
     private String razaoSocial;
     private String descricao;
     private String seguimento;
     private Usuario matriz;
 
-    public Comercio(UUID id, Usuario usuario, String CNPJ, String razaoSocial, String descricao, String seguimento, Usuario matriz) {
+    public Comercio(UUID id, Usuario usuario, String cnpj, String razaoSocial, String descricao, String seguimento, Usuario matriz) {
         this.id = id;
         this.usuario = usuario;
-        this.CNPJ = CNPJ;
+        this.cnpj = cnpj;
         this.razaoSocial = razaoSocial;
         this.descricao = descricao;
         this.seguimento = seguimento;
@@ -36,11 +36,11 @@ public class Comercio {
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
-    public String getCNPJ() {
-        return CNPJ;
+    public String getCnpj() {
+        return cnpj;
     }
-    public void setCNPJ(String cNPJ) {
-        CNPJ = cNPJ;
+    public void setCnpj(String cnpj) {
+        this.cnpj = cnpj;
     }
     public String getRazaoSocial() {
         return razaoSocial;

@@ -9,6 +9,7 @@ public interface UsuarioRepository {
 
     Usuario save(Usuario usuario);
     Usuario findById(UUID id);
+    Usuario findByEmail(String email);
     List<Usuario> findAll();
     void update(Usuario usuario);
     void delete(UUID id);

@@ -20,6 +20,9 @@ public class UsuarioUseCase {
 
     public Usuario salvarUsuarioEntity(String nome, String email, String senha, int perfilUsuario, String fotoPerfil, UUID idEndereco) {
         Usuario usuario = new Usuario(UUID.randomUUID(), nome, email, senha, perfilUsuario, fotoPerfil, idEndereco);
+        if(usuarioRepository.findByEmail(email) != null) {
+            throw new IllegalArgumentException("Email já cadastrado");
+        }
         return usuarioRepository.save(usuario);
     }
 
@@ -38,4 +41,5 @@ public class UsuarioUseCase {
     public List<Usuario> findAll() {
         return usuarioRepository.findAll();
     }
+
 }

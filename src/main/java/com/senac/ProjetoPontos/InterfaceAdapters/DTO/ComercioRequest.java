@@ -1,11 +1,11 @@
-package com.senac.ProjetoPontos.InterfaceAdapters.DTOs;
+package com.senac.ProjetoPontos.InterfaceAdapters.DTO;
 
 import java.util.UUID;
 
 public class ComercioRequest {
 
     private UUID usuarioId;
-    private String CNPJ;
+    private String cnpj;
     private String razaoSocial;
     private String descricao;
     private String seguimento;
@@ -21,12 +21,12 @@ public class ComercioRequest {
         this.usuarioId = usuarioId;
     }
 
-    public String getCNPJ() {
-        return CNPJ;
+    public String getCnpj() {
+        return cnpj;
     }
 
-    public void setCNPJ(String CNPJ) {
-        this.CNPJ = CNPJ;
+    public void setCnpj(String cnpj) {
+        this.cnpj = cnpj;
     }
 
     public String getRazaoSocial() {

@@ -19,9 +19,7 @@ public class ComercioEntity {
     @JoinColumn(name = "id_usuario", referencedColumnName = "id", unique = true)
     private UsuarioEntity usuario;
     @Column
-    private String nomeComercio;
-    @Column
-    private String CNPJ;
+    private String cnpj;
     @Column
     private String razaoSocial;
     @Column
@@ -36,11 +34,10 @@ public class ComercioEntity {
 
     protected ComercioEntity() {}
 
-    public ComercioEntity(UUID id, UsuarioEntity usuario, String nomeComercio, String CNPJ, String razaoSocial, String descricao, String seguimento, UsuarioEntity matriz, List<ProdutoEntity> produtos) {
+    public ComercioEntity(UUID id, UsuarioEntity usuario, String cnpj, String razaoSocial, String descricao, String seguimento, UsuarioEntity matriz, List<ProdutoEntity> produtos) {
         this.id = id;
         this.usuario = usuario;
-        this.nomeComercio = nomeComercio;
-        this.CNPJ = CNPJ;
+        this.cnpj = cnpj;
         this.razaoSocial = razaoSocial;
         this.descricao = descricao;
         this.seguimento = seguimento;
@@ -60,17 +57,11 @@ public class ComercioEntity {
     public void setUsuario(UsuarioEntity usuario) {
         this.usuario = usuario;
     }
-    public String getNomeComercio() {
-        return nomeComercio;
+    public String getCnpj() {
+        return cnpj;
     }
-    public void setNomeComercio(String nomeComercio) {
-        this.nomeComercio = nomeComercio;
-    }
-    public String getCNPJ() {
-        return CNPJ;
-    }
-    public void setCNPJ(String cNPJ) {
-        CNPJ = cNPJ;
+    public void setCnpj(String cnpj) {
+        this.cnpj = cnpj;
     }
     public String getRazaoSocial() {
         return razaoSocial;

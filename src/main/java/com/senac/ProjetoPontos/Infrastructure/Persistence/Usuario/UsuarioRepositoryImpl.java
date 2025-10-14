@@ -43,6 +43,13 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
     }
 
     @Override
+    public Usuario findByEmail(String email) {
+        return jpaRepository.findByEmail(email)
+                .map(entity -> mapper.map(entity, Usuario.class))
+                .orElse(null);
+    }
+
+    @Override
     public void update(Usuario usuario) {
         if (jpaRepository.existsById(usuario.getId())) {
             UsuarioEntity entity = mapper.map(usuario, UsuarioEntity.class);

@@ -26,13 +26,11 @@ public class Usuario {
         if (senha.length() < 6) {
             throw new IllegalArgumentException("Senha deve ter pelo menos 6 caracteres");
         }
-        if (senha.length() > 20) {
-            throw new IllegalArgumentException("Senha deve ter no máximo 20 caracteres");
-        }
         if (perfilUsuario < 1 || perfilUsuario > 3 || perfilUsuario == 0) {
             throw new IllegalArgumentException("Perfil de usuário inválido");
         }
-
+        this.id = id;
+        this.idEndereco = idEndereco;
         this.nome = nome;
         this.email = email;
         this.senha = senha;
