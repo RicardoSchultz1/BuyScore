@@ -34,17 +34,22 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         final String authHeader = request.getHeader("Authorization");
         String username = null;
         String jwt = null;
-
         if (authHeader == null) {
             logger.debug("No Authorization header present");
-        } else if (!authHeader.startsWith("Bearer ")) {
-            logger.debug("Authorization header does not start with Bearer: {}", authHeader);
         } else {
-            jwt = authHeader.substring(7);
-            try {
-                username = jwtUtil.extractUsername(jwt);
-            } catch (Exception ex) {
-                logger.debug("Failed to extract username from JWT: {}", ex.getMessage());
+            String header = authHeader.trim();
+            // accept case-insensitive 'Bearer ' prefix
+            if (header.length() < 7 || !header.regionMatches(true, 0, "Bearer ", 0, 7)) {
+                // log first 40 chars (masked) to help debugging without dumping full token
+                String snippet = header.length() <= 40 ? header : header.substring(0, 40) + "...";
+                logger.debug("Authorization header not using 'Bearer ' prefix: {}", snippet);
+            } else {
+                jwt = header.substring(7).trim();
+                try {
+                    username = jwtUtil.extractUsername(jwt);
+                } catch (Exception ex) {
+                    logger.debug("Failed to extract username from JWT: {}", ex.toString());
+                }
             }
         }
 

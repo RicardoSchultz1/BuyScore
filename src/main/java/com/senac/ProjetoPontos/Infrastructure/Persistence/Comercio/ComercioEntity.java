@@ -3,6 +3,7 @@ package com.senac.ProjetoPontos.Infrastructure.Persistence.Comercio;
 import java.util.List;
 import java.util.UUID;
 
+import com.senac.ProjetoPontos.Infrastructure.Persistence.Ponto.PontoEntity;
 import com.senac.ProjetoPontos.Infrastructure.Persistence.Produto.ProdutoEntity;
 import com.senac.ProjetoPontos.Infrastructure.Persistence.Usuario.UsuarioEntity;
 
@@ -30,7 +31,9 @@ public class ComercioEntity {
     @JoinColumn(name = "id_matriz", referencedColumnName = "id")
     private UsuarioEntity matriz;
     @OneToMany(mappedBy = "comercio")
-    private List<ProdutoEntity> produtos;
+    private List<ProdutoEntity> produtos;    
+    @OneToMany(mappedBy = "comercio")
+    private java.util.List<com.senac.ProjetoPontos.Infrastructure.Persistence.Ponto.PontoEntity> pontos;
 
     protected ComercioEntity() {}
 
@@ -92,6 +95,14 @@ public class ComercioEntity {
     }
     public void setProdutos(List<ProdutoEntity> produtos) {
         this.produtos = produtos;
+    }
+
+    public java.util.List<com.senac.ProjetoPontos.Infrastructure.Persistence.Ponto.PontoEntity> getPontos() {
+        return pontos;
+    }
+
+    public void setPontos(java.util.List<com.senac.ProjetoPontos.Infrastructure.Persistence.Ponto.PontoEntity> pontos) {
+        this.pontos = pontos;
     }
 
 }

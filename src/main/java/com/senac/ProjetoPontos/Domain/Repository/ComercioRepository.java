@@ -15,4 +15,5 @@ public interface ComercioRepository {
     void update(Comercio comercio);
     void delete(UUID id);
     Optional<Comercio> findByCnpj(String cnpj);
+    Optional<Comercio> findByUsuarioId(UUID usuarioId);
 }

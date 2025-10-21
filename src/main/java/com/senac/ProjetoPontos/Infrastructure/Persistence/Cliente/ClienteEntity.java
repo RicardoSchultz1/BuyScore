@@ -36,14 +36,18 @@ public class ClienteEntity {
     )
     private List<ProdutoEntity> produtos;
     
+    @OneToMany(mappedBy = "cliente")
+    private java.util.List<com.senac.ProjetoPontos.Infrastructure.Persistence.Ponto.PontoEntity> pontosAssociados;
+    
     protected ClienteEntity() {}
 
-    public ClienteEntity(UUID id, UsuarioEntity usuario, int pontos, List<ComercioEntity> comercios, List<ProdutoEntity> produtos) {
+    public ClienteEntity(UUID id, UsuarioEntity usuario, int pontos, List<ComercioEntity> comercios, List<ProdutoEntity> produtos, java.util.List<com.senac.ProjetoPontos.Infrastructure.Persistence.Ponto.PontoEntity> pontosAssociados) {
         this.id = id;
         this.usuario = usuario;
         this.pontos = pontos;
         this.comercios = comercios;
         this.produtos = produtos;
+        this.pontosAssociados = pontosAssociados;
     }
 
     public UUID getId() {
@@ -75,6 +79,13 @@ public class ClienteEntity {
     }
     public void setProdutos(List<ProdutoEntity> produtos) {
         this.produtos = produtos;
+    }
+    public java.util.List<com.senac.ProjetoPontos.Infrastructure.Persistence.Ponto.PontoEntity> getPontosAssociados() {
+        return pontosAssociados;
+    }
+
+    public void setPontosAssociados(java.util.List<com.senac.ProjetoPontos.Infrastructure.Persistence.Ponto.PontoEntity> pontosAssociados) {
+        this.pontosAssociados = pontosAssociados;
     }
 
 }

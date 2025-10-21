@@ -3,6 +3,7 @@ package com.senac.ProjetoPontos.InterfaceAdapters.Controllers;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,6 +11,7 @@ import com.senac.ProjetoPontos.Aplication.UseCase.ComercioUseCase;
 import com.senac.ProjetoPontos.Aplication.UseCase.UsuarioUseCase;
 import com.senac.ProjetoPontos.Domain.Entity.Comercio;
 import com.senac.ProjetoPontos.Domain.Entity.Endereco;
+import com.senac.ProjetoPontos.Domain.Entity.Ponto;
 import com.senac.ProjetoPontos.Domain.Entity.Usuario;
 import com.senac.ProjetoPontos.InterfaceAdapters.DTO.ComercioUserRequest;
 import com.senac.ProjetoPontos.InterfaceAdapters.DTO.ComercioWithTokenResponse;
@@ -68,5 +70,12 @@ public class ComercioController {
     public ResponseEntity<List<Comercio>> findAll() {
         List<Comercio> comercios = useCase.findAll();
         return ResponseEntity.ok(comercios);
+    }
+
+    @PostMapping("/criarponto")
+    public ResponseEntity<Ponto> criarPonto(@RequestBody Ponto ponto, Authentication authentication) {
+        String username = authentication.getName();
+        useCase.criarPontos(ponto.getPontos(), username);
+        return ResponseEntity.ok().build();
     }
 }

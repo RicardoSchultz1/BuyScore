@@ -9,5 +9,6 @@ public interface ComercioJpaRepository extends JpaRepository<ComercioEntity, UUI
 
 	boolean existsByUsuario_Id(UUID usuarioId);
 	Optional<ComercioEntity> findByCnpj(String cnpj);
+	Optional<ComercioEntity> findByUsuario_Id(UUID usuarioId);
 
 }

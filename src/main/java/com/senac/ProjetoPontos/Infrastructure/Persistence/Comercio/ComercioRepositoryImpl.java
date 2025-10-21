@@ -66,4 +66,10 @@ public class ComercioRepositoryImpl implements ComercioRepository {
         return jpaRepository.findByCnpj(cnpj)
                 .map(entity -> mapper.map(entity, Comercio.class));
     }
+
+    @Override
+    public Optional<Comercio> findByUsuarioId(UUID usuarioId) {
+        return jpaRepository.findByUsuario_Id(usuarioId)
+                .map(entity -> mapper.map(entity, Comercio.class));
+    }
 }
