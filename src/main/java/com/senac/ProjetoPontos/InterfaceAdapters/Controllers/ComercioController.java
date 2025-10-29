@@ -39,14 +39,18 @@ public class ComercioController {
     @PostMapping
     public ResponseEntity<ComercioWithTokenResponse> criarComercio(@RequestBody ComercioUserRequest request) {
         Endereco endereco = new Endereco(null, request.getCep(), request.getLogradouro(), request.getComplemento(), request.getBairro(), request.getCidade(), request.getNumero(), request.getUf());
-        Usuario usuario = new Usuario(null, request.getNome(), request.getEmail(), request.getSenha(), request.getPerfilUsuario(), request.getFotoUsuario(), endereco);
+        Usuario usuario = new Usuario(null, request.getNome(), request.getEmail(), request.getSenha(), 2, request.getFotoUsuario(), endereco);
         Usuario matriz = null;
-        if (request.getMatrizId() != null && !request.getMatrizId().trim().isEmpty()) {
+        /*if (request.getMatrizId() != null && !request.getMatrizId().trim().isEmpty()) {
             var found = useCase.findByCnpj(request.getMatrizId().trim());
             if (found != null && found.isPresent()) {
 
                 matriz = usuarioUseCase.buscarUsuario(found.get().getUsuario().getId());
             }
+        }*/
+        if (request.getMatrizId() != null && !request.getMatrizId().trim().isEmpty()) {
+            Comercio come = useCase.findByCnpj(request.getMatrizId().trim()).get();
+            matriz = come.getUsuario();
         }
         
         Comercio salvo = useCase.salvarComercioEntity(usuario, request.getCnpj(), request.getRazaoSocial(), request.getDescricao(), request.getSeguimento(), matriz);

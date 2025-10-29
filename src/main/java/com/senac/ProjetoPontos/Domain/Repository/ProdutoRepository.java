@@ -12,4 +12,5 @@ public interface ProdutoRepository {
     Produto save(Produto produto);
     void update(Produto produto);
     void delete(UUID id);
+    List<Produto> findByComercioId(UUID comercioId);
 }

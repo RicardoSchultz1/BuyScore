@@ -6,12 +6,9 @@ import java.util.UUID;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Repository;
-
-import com.senac.ProjetoPontos.Domain.Entity.Ponto;
 import com.senac.ProjetoPontos.Domain.Entity.Produto;
 import com.senac.ProjetoPontos.Domain.Exception.NaoEncontradoException;
 import com.senac.ProjetoPontos.Domain.Repository.ProdutoRepository;
-import com.senac.ProjetoPontos.Infrastructure.Persistence.Ponto.PontoEntity;
 
 @Repository
 public class ProdutoRepositoryImpl implements ProdutoRepository {
@@ -57,6 +54,14 @@ public class ProdutoRepositoryImpl implements ProdutoRepository {
     @Override
     public void delete(UUID id) {
         produtoJpaRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Produto> findByComercioId(UUID comercioId) {
+        List<ProdutoEntity> entities = produtoJpaRepository.findByComercioId(comercioId);
+        return entities.stream()
+                .map(entity -> mapper.map(entity, Produto.class))
+                .toList();
     }
 
 }

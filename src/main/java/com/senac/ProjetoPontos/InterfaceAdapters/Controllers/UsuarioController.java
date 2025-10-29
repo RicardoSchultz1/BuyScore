@@ -1,5 +1,6 @@
 package com.senac.ProjetoPontos.InterfaceAdapters.Controllers;
 
+
 import java.util.List;
 import java.util.UUID;
 
@@ -37,7 +38,7 @@ public class UsuarioController {
         Usuario salvo = useCase.salvarUsuario(usuario);
         return ResponseEntity.ok(salvo);
     }
-    //@PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/all")
     public ResponseEntity<List<Usuario>> findAll() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();

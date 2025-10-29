@@ -61,4 +61,5 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
     public void delete(UUID id) {
         jpaRepository.deleteById(id);
     } 
+
 }

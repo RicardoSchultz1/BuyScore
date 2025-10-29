@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.senac.ProjetoPontos.Domain.Entity.Cliente;
@@ -34,10 +35,12 @@ public class ClienteUseCase {
             Endereco iden = enderecoRepository.save(usuario.getEndereco());
 
             try {
-            usuario.setEndereco(iden);    
+            usuario.setEndereco(iden);   
+            usuario.setSenha(new BCryptPasswordEncoder().encode(usuario.getSenha())); 
             Usuario idus =usuarioRepository.save(usuario);
 
                 try {
+                    
                     Cliente cliente = new Cliente(null, idus, 0, null, null );
                     return clienteRepository.save(cliente);
         } catch (Exception e) {

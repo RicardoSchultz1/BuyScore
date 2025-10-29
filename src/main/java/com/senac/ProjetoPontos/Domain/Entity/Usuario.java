@@ -2,6 +2,8 @@ package com.senac.ProjetoPontos.Domain.Entity;
 
 import java.util.UUID;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 public class Usuario {
     
     private UUID id;

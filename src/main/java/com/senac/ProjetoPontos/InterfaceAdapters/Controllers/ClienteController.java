@@ -38,7 +38,7 @@ public class ClienteController {
     @PostMapping
     public ResponseEntity<ClienteWithTokenResponse> criarCliente(@RequestBody ClienteUserRequest request) {
         Endereco endereco = new Endereco(null, request.getCep(), request.getLogradouro(), request.getComplemento(), request.getBairro(), request.getCidade(), request.getNumero(), request.getUf());
-        Usuario usuario = new Usuario(null, request.getNome(), request.getEmail(), request.getSenha(), request.getPerfilUsuario(), request.getFotoUsuario(), endereco);
+        Usuario usuario = new Usuario(null, request.getNome(), request.getEmail(), request.getSenha(), 1, request.getFotoUsuario(), endereco);
 
         Cliente salvo = clienteService.salvarClienteEntity(usuario);
         // gerar token para o usuário recém-criado

@@ -3,6 +3,7 @@ package com.senac.ProjetoPontos.Aplication.UseCase;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.senac.ProjetoPontos.Domain.Entity.Endereco;
@@ -14,13 +15,16 @@ import com.senac.ProjetoPontos.Domain.Repository.UsuarioRepository;
 public class UsuarioUseCase {
 
     private final UsuarioRepository usuarioRepository;
+    private final PasswordEncoder passwordEncoder;
 
-     public UsuarioUseCase(UsuarioRepository usuarioRepository) {
+     public UsuarioUseCase(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder) {
         this.usuarioRepository = usuarioRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public Usuario salvarUsuarioEntity(String nome, String email, String senha, int perfilUsuario, String fotoPerfil, Endereco endereco) {
-        Usuario usuario = new Usuario(null, nome, email, senha, perfilUsuario, fotoPerfil, endereco);
+        String senhaCriptografada = passwordEncoder.encode(senha);
+        Usuario usuario = new Usuario(null, nome, email, senhaCriptografada, perfilUsuario, fotoPerfil, endereco);
         if(usuarioRepository.findByEmail(email) != null) {
             throw new IllegalArgumentException("Email já cadastrado");
         }

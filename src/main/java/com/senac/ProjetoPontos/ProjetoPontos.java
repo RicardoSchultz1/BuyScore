@@ -1,15 +1,11 @@
 package com.senac.ProjetoPontos;
 
-import java.util.UUID;
-
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.senac.ProjetoPontos.Aplication.UseCase.UsuarioUseCase;
-import com.senac.ProjetoPontos.Domain.Entity.Usuario;
 
 
 
@@ -24,17 +20,20 @@ public class ProjetoPontos {
 	/*@Bean
     public CommandLineRunner initUsuario(UsuarioUseCase usuarioUseCase) {
         return args -> {
-            String encodedPassword = new BCryptPasswordEncoder().encode("suasenha");
-            System.out.println("Senha criptografada: " + encodedPassword);
-
-            UUID usuarioId = UUID.randomUUID();
+            // Criar usuário com senha simples - o UsuarioUseCase vai criptografar
             String nome = "Ricardo Adm";
-            String email = "schultz.dauer@gmail.com";
-            String senha = encodedPassword;
+            String email = "schul.dauer@gmail.com";
+            String senha = "suasenha"; // Senha simples - será criptografada automaticamente
             int tipo = 1;
             String imagem = "https://i.imgur.com/0y0y0y0.png";
-            UUID algumUUID = null;
 
-            usuarioUseCase.salvarUsuarioEntity(nome, email, senha, tipo, imagem, usuarioId);
-        };  */
-    }
+            // Verifica se o usuário já existe antes de criar
+            try {
+                usuarioUseCase.salvarUsuarioEntity(nome, email, senha, tipo, imagem, null);
+                System.out.println("Usuário de teste criado: " + email);
+            } catch (IllegalArgumentException e) {
+                System.out.println("Usuário já existe: " + email);
+            }
+        };  
+    } */
+}
