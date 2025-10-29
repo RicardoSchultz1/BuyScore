@@ -9,14 +9,12 @@ import org.springframework.stereotype.Service;
 
 import com.senac.ProjetoPontos.Domain.Entity.Comercio;
 import com.senac.ProjetoPontos.Domain.Entity.Endereco;
-import com.senac.ProjetoPontos.Domain.Entity.Ponto;
 import com.senac.ProjetoPontos.Domain.Entity.Usuario;
 import com.senac.ProjetoPontos.Domain.Exception.NaoEncontradoException;
 import com.senac.ProjetoPontos.Domain.Repository.ComercioRepository;
 import com.senac.ProjetoPontos.Domain.Repository.EnderecoRepository;
-import com.senac.ProjetoPontos.Domain.Repository.PontoRepository;
+
 import com.senac.ProjetoPontos.Domain.Repository.UsuarioRepository;
-import com.senac.ProjetoPontos.Infrastructure.Config.SecureRandom;
 
 @Service
 public class ComercioUseCase {
@@ -24,14 +22,12 @@ public class ComercioUseCase {
     private final ComercioRepository comercioRepository;
     private final UsuarioRepository usuarioRepository;
     private final EnderecoRepository enderecoRepository;
-    private final PontoRepository pontoRepository;
 
 
-    public ComercioUseCase(ComercioRepository comercioRepository, UsuarioRepository usuarioRepository, EnderecoRepository enderecoRepository, PontoRepository pontoRepository) {
+    public ComercioUseCase(ComercioRepository comercioRepository, UsuarioRepository usuarioRepository, EnderecoRepository enderecoRepository) {
         this.comercioRepository = comercioRepository;
         this.usuarioRepository = usuarioRepository;
         this.enderecoRepository = enderecoRepository;
-        this.pontoRepository = pontoRepository;
     }
 
     public Comercio salvarComercioEntity(Usuario usuario, String cnpj, String razaoSocial, String descricao, String seguimento, Usuario matriz) {
@@ -110,22 +106,4 @@ public class ComercioUseCase {
                 .orElseThrow(() -> new NaoEncontradoException("Comércio não encontrado para o usuário ID: " + usuarioId));
     }
 
-    public void criarPontos(int pontos, String username) {
-        Usuario usuario = usuarioRepository.findByEmail(username);
-        if (usuario == null) {
-            throw new NaoEncontradoException("Usuário não encontrado: " + username);
-        }
-
-        Comercio comercio = comercioRepository.findByUsuarioId(usuario.getId()).get();
-        if (comercio == null) {
-            throw new NaoEncontradoException("Comércio não encontrado para o usuário: " + username);
-        }
-    Ponto ponto = new Ponto();
-    String codigo = SecureRandom.generate6LetterCode();
-    ponto.setCodigo(codigo);
-    ponto.setPontos(pontos);
-    ponto.setData(new java.sql.Date(System.currentTimeMillis()));
-    ponto.setComercio(comercio);
-    pontoRepository.save(ponto);
-    }
 }

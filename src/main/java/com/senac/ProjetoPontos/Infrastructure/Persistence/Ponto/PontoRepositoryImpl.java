@@ -58,4 +58,11 @@ public class PontoRepositoryImpl implements PontoRepository {
         jpaRepository.deleteById(id);
     } 
 
+    @Override
+    public Ponto getByCodigo(String codigo) {
+        return jpaRepository.getByCodigo(codigo)
+                .map(entity -> mapper.map(entity, Ponto.class))
+                .orElseThrow(() -> new NaoEncontradoException(codigo));
+    }
+
 }

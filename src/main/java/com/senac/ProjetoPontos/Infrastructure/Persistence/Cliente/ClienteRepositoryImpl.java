@@ -55,4 +55,10 @@ public class ClienteRepositoryImpl implements ClienteRepository {
         clienteJpaRepository.deleteById(id);
     }
 
+    @Override
+    public Cliente findByUsuarioId(UUID usuarioId) {
+        return clienteJpaRepository.findByUsuarioId(usuarioId)
+                .map(entity -> mapper.map(entity, Cliente.class))
+                .orElseThrow(() -> new NaoEncontradoException(usuarioId.toString()));
+    }
 }

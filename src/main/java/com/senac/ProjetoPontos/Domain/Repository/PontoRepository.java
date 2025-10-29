@@ -12,5 +12,6 @@ public interface PontoRepository {
     List<Ponto> findAll();
     void update(Ponto ponto);
     void delete(UUID id);
+    Ponto getByCodigo(String codigo);
     
 }

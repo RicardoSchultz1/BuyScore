@@ -13,19 +13,6 @@ public class Usuario {
     private Endereco endereco;
 
     public Usuario(UUID id, String nome, String email, String senha, int perfilUsuario, String fotoUsuario, Endereco endereco) {
-
-        if (nome == null || nome.isEmpty()) {
-            throw new IllegalArgumentException("Nome não pode ser nulo ou vazio");
-        }
-        if (email == null || email.isEmpty() || !email.contains("@")) {
-            throw new IllegalArgumentException("Email vazio ou inválido");
-        }
-        if (senha == null || senha.isEmpty()) {
-            throw new IllegalArgumentException("Senha não pode ser nulo ou vazio");
-        }
-        if (senha.length() < 6) {
-            throw new IllegalArgumentException("Senha deve ter pelo menos 6 caracteres");
-        }
         if (perfilUsuario < 1 || perfilUsuario > 3 || perfilUsuario == 0) {
             throw new IllegalArgumentException("Perfil de usuário inválido");
         }

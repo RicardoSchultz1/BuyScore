@@ -24,18 +24,20 @@ public class ProdutoEntity {
     @ManyToOne
     @JoinColumn(name = "id_comercio", referencedColumnName = "id")
 	private ComercioEntity comercio;
+    @Column
+    private boolean ativo;
 
 
     protected ProdutoEntity() {}
 
-    public ProdutoEntity(UUID id, String nome, String descricao, int valor, String fotoProduto, ComercioEntity comercio) {
+    public ProdutoEntity(UUID id, String nome, String descricao, int valor, String fotoProduto, ComercioEntity comercio, boolean ativo) {
         this.id = id;
         this.nome = nome;
         this.descricao = descricao;
         this.valor = valor;
         this.fotoProduto = fotoProduto;
         this.comercio = comercio;
-        //this.resgate = resgate;
+        this.ativo = ativo;
     }
   
     public UUID getId() {
@@ -74,10 +76,10 @@ public class ProdutoEntity {
     public void setId_comercio(ComercioEntity comercio) {
         this.comercio = comercio;
     }
-    // public List<ResgateModel> getResgate() {
-    //     return resgate;
-    // }
-    // public void setResgate(List<ResgateModel> resgate) {
-    //     this.resgate = resgate;
-    // }
+    public boolean isAtivo() {
+        return ativo;
+    }
+    public void setAtivo(boolean ativo) {
+        this.ativo = ativo;
+    }
 }

@@ -12,5 +12,6 @@ public interface ClienteRepository {
     List<Cliente> findAll();
     void update(Cliente cliente);
     void delete(UUID id);
+    Cliente findByUsuarioId(UUID usuarioId);
 
 }

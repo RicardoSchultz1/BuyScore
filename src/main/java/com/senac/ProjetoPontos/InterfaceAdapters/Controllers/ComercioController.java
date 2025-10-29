@@ -72,10 +72,5 @@ public class ComercioController {
         return ResponseEntity.ok(comercios);
     }
 
-    @PostMapping("/criarponto")
-    public ResponseEntity<Ponto> criarPonto(@RequestBody Ponto ponto, Authentication authentication) {
-        String username = authentication.getName();
-        useCase.criarPontos(ponto.getPontos(), username);
-        return ResponseEntity.ok().build();
-    }
+    
 }
