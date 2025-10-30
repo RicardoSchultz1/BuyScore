@@ -16,4 +16,8 @@ public interface ComercioRepository {
     void delete(UUID id);
     Optional<Comercio> findByCnpj(String cnpj);
     Optional<Comercio> findByUsuarioId(UUID usuarioId);
+    
+    List<Comercio> findTop5BySeguimento(String seguimento);
+    List<Comercio> findTop5BySeguimentos(List<String> seguimentos);
+    List<Comercio> findTop5FromEachSector();
 }

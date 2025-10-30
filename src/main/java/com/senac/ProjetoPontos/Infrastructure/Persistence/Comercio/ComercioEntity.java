@@ -3,7 +3,6 @@ package com.senac.ProjetoPontos.Infrastructure.Persistence.Comercio;
 import java.util.List;
 import java.util.UUID;
 
-import com.senac.ProjetoPontos.Infrastructure.Persistence.Ponto.PontoEntity;
 import com.senac.ProjetoPontos.Infrastructure.Persistence.Produto.ProdutoEntity;
 import com.senac.ProjetoPontos.Infrastructure.Persistence.Usuario.UsuarioEntity;
 
@@ -34,10 +33,12 @@ public class ComercioEntity {
     private List<ProdutoEntity> produtos;    
     @OneToMany(mappedBy = "comercio")
     private java.util.List<com.senac.ProjetoPontos.Infrastructure.Persistence.Ponto.PontoEntity> pontos;
+    @Column
+    private int vendas;
 
     protected ComercioEntity() {}
 
-    public ComercioEntity(UUID id, UsuarioEntity usuario, String cnpj, String razaoSocial, String descricao, String seguimento, UsuarioEntity matriz, List<ProdutoEntity> produtos) {
+    public ComercioEntity(UUID id, UsuarioEntity usuario, String cnpj, String razaoSocial, String descricao, String seguimento, UsuarioEntity matriz, List<ProdutoEntity> produtos, int vendas) {
         this.id = id;
         this.usuario = usuario;
         this.cnpj = cnpj;
@@ -46,6 +47,7 @@ public class ComercioEntity {
         this.seguimento = seguimento;
         this.matriz = matriz;
         this.produtos = produtos;
+        this.vendas = vendas;
     }
 
     public UUID getId() {
@@ -103,6 +105,12 @@ public class ComercioEntity {
 
     public void setPontos(java.util.List<com.senac.ProjetoPontos.Infrastructure.Persistence.Ponto.PontoEntity> pontos) {
         this.pontos = pontos;
+    }
+    public int getVendas() {
+        return vendas;
+    }
+    public void setVendas(int vendas) {
+        this.vendas = vendas;
     }
 
 }

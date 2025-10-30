@@ -46,7 +46,7 @@ public class ComercioUseCase {
             Usuario idus =usuarioRepository.save(usuario);
 
                 try {
-                    Comercio comercio = new Comercio(null, idus, cnpj, razaoSocial, descricao, seguimento, matriz);
+                    Comercio comercio = new Comercio(null, idus, cnpj, razaoSocial, descricao, seguimento, matriz, 0);
                     return comercioRepository.save(comercio);
         } catch (Exception e) {
             throw new RuntimeException("Erro ao salvar comércio", e);
@@ -104,6 +104,26 @@ public class ComercioUseCase {
     public Comercio buscarComercioPorUsuarioId(UUID usuarioId) {
         return comercioRepository.findByUsuarioId(usuarioId)
                 .orElseThrow(() -> new NaoEncontradoException("Comércio não encontrado para o usuário ID: " + usuarioId));
+    }
+
+    // Métodos para consultas personalizadas de vendas
+    public List<Comercio> buscarTop5ComerciosPorSeguimento(String seguimento) {
+        List<Comercio> resultado = comercioRepository.findTop5BySeguimento(seguimento);
+        return resultado;
+    }
+
+    public List<Comercio> buscarTop5ComerciosMultiplosSeguimentos(List<String> seguimentos) {
+        return comercioRepository.findTop5BySeguimentos(seguimentos);
+    }
+
+    public List<Comercio> buscarTop5DeCadaSetor() {
+        return comercioRepository.findTop5FromEachSector();
+    }
+
+    // Método específico para buscar os top 5 dos 3 setores mencionados
+    public List<Comercio> buscarTop5RestauranteFarmaciaOutros() {
+        List<String> setores = List.of("restaurante", "farmacia", "outros");
+        return comercioRepository.findTop5BySeguimentos(setores);
     }
 
 }

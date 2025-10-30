@@ -11,8 +11,9 @@ public class Comercio {
     private String descricao;
     private String seguimento;
     private Usuario matriz;
+    private int vendas;
 
-    public Comercio(UUID id, Usuario usuario, String cnpj, String razaoSocial, String descricao, String seguimento, Usuario matriz) {
+    public Comercio(UUID id, Usuario usuario, String cnpj, String razaoSocial, String descricao, String seguimento, Usuario matriz, int vendas) {
         this.id = id;
         this.usuario = usuario;
         this.cnpj = cnpj;
@@ -20,6 +21,7 @@ public class Comercio {
         this.descricao = descricao;
         this.seguimento = seguimento;
         this.matriz = matriz;
+        this.vendas = vendas;
     }
 
     public Comercio() { }
@@ -66,5 +68,11 @@ public class Comercio {
     public void setMatriz(Usuario matriz) {
         this.matriz = matriz;
     }
-    
+    public int getVendas() {
+        return vendas;
+    }
+    public void setVendas(int vendas) {
+        this.vendas = vendas;
+    }
+
 }

@@ -72,4 +72,31 @@ public class ComercioRepositoryImpl implements ComercioRepository {
         return jpaRepository.findByUsuario_Id(usuarioId)
                 .map(entity -> mapper.map(entity, Comercio.class));
     }
+
+    @Override
+    public java.util.List<Comercio> findTop5BySeguimento(String seguimento) {
+        java.util.List<ComercioEntity> entities = jpaRepository.findTop5BySeguimentoOrderByVendasDesc(seguimento);
+        
+        java.util.List<Comercio> result = entities.stream()
+                .limit(5)
+                .map(entity -> mapper.map(entity, Comercio.class))
+                .toList();
+                
+        return result;
+    }
+
+    @Override
+    public java.util.List<Comercio> findTop5BySeguimentos(java.util.List<String> seguimentos) {
+        return jpaRepository.findTop5BySeguimentoInOrderByVendasDesc(seguimentos).stream()
+                .limit(5)
+                .map(entity -> mapper.map(entity, Comercio.class))
+                .toList();
+    }
+
+    @Override
+    public java.util.List<Comercio> findTop5FromEachSector() {
+        return jpaRepository.findTop5FromEachSector().stream()
+                .map(entity -> mapper.map(entity, Comercio.class))
+                .toList();
+    }
 }

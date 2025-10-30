@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.senac.ProjetoPontos.Domain.Entity.Cliente;
 import com.senac.ProjetoPontos.Domain.Entity.Comercio;
 import com.senac.ProjetoPontos.Domain.Entity.Ponto;
+import com.senac.ProjetoPontos.Domain.Entity.Produto;
 import com.senac.ProjetoPontos.Domain.Entity.Usuario;
 import com.senac.ProjetoPontos.Domain.Exception.NaoEncontradoException;
 import com.senac.ProjetoPontos.Domain.Repository.ClienteRepository;
@@ -30,16 +31,16 @@ public class PontosUseCase {
         this.clienteRepository = clienteRepository;
     }
 
-        public String criarPontos(int pontos, UUID usuarioId) {
-        Usuario usuario = usuarioRepository.findById(usuarioId);
-        if (usuario == null) {
-            throw new NaoEncontradoException("Usuário não encontrado: " + usuarioId);
-        }
+    public String criarPontos(int pontos, UUID usuarioId) {
+    Usuario usuario = usuarioRepository.findById(usuarioId);
+    if (usuario == null) {
+        throw new NaoEncontradoException("Usuário não encontrado: " + usuarioId);
+    }
 
-        Comercio comercio = comercioRepository.findByUsuarioId(usuario.getId()).get();
-        if (comercio == null) {
-            throw new NaoEncontradoException("Comércio não encontrado para o usuário: " + usuarioId);
-        }
+    Comercio comercio = comercioRepository.findByUsuarioId(usuario.getId()).get();
+    if (comercio == null) {
+        throw new NaoEncontradoException("Comércio não encontrado para o usuário: " + usuarioId);
+    }
     Ponto ponto = new Ponto();
     String codigo = SecureRandom.generate6LetterCode();
     ponto.setCodigo(codigo);
