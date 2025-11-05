@@ -7,6 +7,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.senac.ProjetoPontos.Domain.Entity.Cliente;
+import com.senac.ProjetoPontos.Domain.Entity.Comercio;
 import com.senac.ProjetoPontos.Domain.Entity.Endereco;
 import com.senac.ProjetoPontos.Domain.Entity.Usuario;
 import com.senac.ProjetoPontos.Domain.Exception.NaoEncontradoException;
@@ -82,5 +83,21 @@ public class ClienteUseCase {
     }
     public void deletarCliente(UUID id) {
         clienteRepository.delete(id);
+    }
+
+    public void adicionarComercioFavorito(UUID clienteId, UUID comercioId) {
+        clienteRepository.adicionarComercioFavorito(clienteId, comercioId);
+    }
+
+    public void removerComercioFavorito(UUID clienteId, UUID comercioId) {
+        clienteRepository.removerComercioFavorito(clienteId, comercioId);
+    }
+
+    public List<Comercio> listarComerciosFavoritos(UUID clienteId) {
+        return clienteRepository.findComerciosFavoritos(clienteId);
+    }
+
+    public boolean isComercioFavorito(UUID clienteId, UUID comercioId) {
+        return clienteRepository.isComercioFavorito(clienteId, comercioId);
     }
 }
