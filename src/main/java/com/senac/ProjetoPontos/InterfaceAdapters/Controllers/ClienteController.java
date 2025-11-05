@@ -13,6 +13,7 @@ import com.senac.ProjetoPontos.Aplication.UseCase.UsuarioUseCase;
 import com.senac.ProjetoPontos.Domain.Entity.Cliente;
 import com.senac.ProjetoPontos.Domain.Entity.Comercio;
 import com.senac.ProjetoPontos.Domain.Entity.Endereco;
+import com.senac.ProjetoPontos.Domain.Entity.Produto;
 import com.senac.ProjetoPontos.Domain.Entity.Usuario;
 import com.senac.ProjetoPontos.Infrastructure.Security.JwtUtil;
 import com.senac.ProjetoPontos.Infrastructure.Security.UsuarioDetails;
@@ -76,31 +77,59 @@ public class ClienteController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/favoritos/{comercioId}")
+    @PostMapping("/comercio-favoritos/{comercioId}")
     public ResponseEntity<Void> adicionarComercioFavorito(@PathVariable UUID comercioId, Authentication authentication) {
         UsuarioDetails userDetails = (UsuarioDetails) authentication.getPrincipal();
         clienteService.adicionarComercioFavorito(clienteService.buscarClientePorUsuarioId(userDetails.getUsuario().getId()).getId(), comercioId);
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/favoritos/{comercioId}")
+    @DeleteMapping("/comercio-favoritos/{comercioId}")
     public ResponseEntity<Void> removerComercioFavorito(@PathVariable UUID comercioId, Authentication authentication) {
         UsuarioDetails userDetails = (UsuarioDetails) authentication.getPrincipal();
         clienteService.removerComercioFavorito(clienteService.buscarClientePorUsuarioId(userDetails.getUsuario().getId()).getId(), comercioId);
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/favoritos")
+    @GetMapping("/comercio-favoritos")
     public ResponseEntity<List<Comercio>> listarComerciosFavoritos(Authentication authentication) {
         UsuarioDetails userDetails = (UsuarioDetails) authentication.getPrincipal();
         List<Comercio> comerciosFavoritos = clienteService.listarComerciosFavoritos(clienteService.buscarClientePorUsuarioId(userDetails.getUsuario().getId()).getId());
         return ResponseEntity.ok(comerciosFavoritos);
     }
 
-    @GetMapping("/favoritos/{comercioId}/check")
+    @GetMapping("/comercio-favoritos/{comercioId}/check")
     public ResponseEntity<Boolean> isComercioFavorito(@PathVariable UUID comercioId, Authentication authentication) {
         UsuarioDetails userDetails = (UsuarioDetails) authentication.getPrincipal();
         boolean isFavorito = clienteService.isComercioFavorito(clienteService.buscarClientePorUsuarioId(userDetails.getUsuario().getId()).getId(), comercioId);
+        return ResponseEntity.ok(isFavorito);
+    }
+
+    @PostMapping("/produto-favoritos/{produtoId}")
+    public ResponseEntity<Void> adicionarProdutoFavorito(@PathVariable UUID produtoId, Authentication authentication) {
+        UsuarioDetails userDetails = (UsuarioDetails) authentication.getPrincipal();
+        clienteService.adicionarProdutoFavorito(clienteService.buscarClientePorUsuarioId(userDetails.getUsuario().getId()).getId(), produtoId);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/produto-favoritos/{produtoId}")
+    public ResponseEntity<Void> removerProdutoFavorito(@PathVariable UUID produtoId, Authentication authentication) {
+        UsuarioDetails userDetails = (UsuarioDetails) authentication.getPrincipal();
+        clienteService.removerProdutoFavorito(clienteService.buscarClientePorUsuarioId(userDetails.getUsuario().getId()).getId(), produtoId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/produto-favoritos")
+    public ResponseEntity<List<Produto>> listarProdutosFavoritos(Authentication authentication) {
+        UsuarioDetails userDetails = (UsuarioDetails) authentication.getPrincipal();
+        List<Produto> produtosFavoritos = clienteService.listarProdutosFavoritos(clienteService.buscarClientePorUsuarioId(userDetails.getUsuario().getId()).getId());
+        return ResponseEntity.ok(produtosFavoritos);
+    }
+
+    @GetMapping("/produto-favoritos/{produtoId}/check")
+    public ResponseEntity<Boolean> isProdutoFavorito(@PathVariable UUID produtoId, Authentication authentication) {
+        UsuarioDetails userDetails = (UsuarioDetails) authentication.getPrincipal();
+        boolean isFavorito = clienteService.isProdutoFavorito(clienteService.buscarClientePorUsuarioId(userDetails.getUsuario().getId()).getId(), produtoId);
         return ResponseEntity.ok(isFavorito);
     }
 

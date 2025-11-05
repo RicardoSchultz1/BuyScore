@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.senac.ProjetoPontos.Domain.Entity.Cliente;
 import com.senac.ProjetoPontos.Domain.Entity.Comercio;
+import com.senac.ProjetoPontos.Domain.Entity.Produto;
 import com.senac.ProjetoPontos.Domain.Exception.NaoEncontradoException;
 import com.senac.ProjetoPontos.Domain.Repository.ClienteRepository;
 
@@ -94,5 +95,37 @@ public class ClienteRepositoryImpl implements ClienteRepository {
     @Override
     public boolean isComercioFavorito(UUID clienteId, UUID comercioId) {
         return clienteJpaRepository.existsComercioFavorito(clienteId, comercioId);
+    }
+
+    @Override
+    @Transactional
+    public void adicionarProdutoFavorito(UUID clienteId, UUID produtoId) {
+        if (!clienteJpaRepository.existsById(clienteId)) {
+            throw new NaoEncontradoException("Cliente não encontrado: " + clienteId);
+        }
+        if (!clienteJpaRepository.existsProdutoFavorito(clienteId, produtoId)) {
+            clienteJpaRepository.adicionarProdutoFavorito(clienteId, produtoId);
+        }
+    }
+
+    @Override
+    @Transactional
+    public void removerProdutoFavorito(UUID clienteId, UUID produtoId) {
+        if (!clienteJpaRepository.existsById(clienteId)) {
+            throw new NaoEncontradoException("Cliente não encontrado: " + clienteId);
+        }
+        clienteJpaRepository.removerProdutoFavorito(clienteId, produtoId);
+    }
+
+    @Override
+    public List<Produto> findProdutosFavoritos(UUID clienteId) {
+        return clienteJpaRepository.findProdutosFavoritosByClienteId(clienteId).stream()
+                .map(entity -> mapper.map(entity, Produto.class))
+                .toList();
+    }
+
+    @Override
+    public boolean isProdutoFavorito(UUID clienteId, UUID produtoId) {
+        return clienteJpaRepository.existsProdutoFavorito(clienteId, produtoId);
     }
 }

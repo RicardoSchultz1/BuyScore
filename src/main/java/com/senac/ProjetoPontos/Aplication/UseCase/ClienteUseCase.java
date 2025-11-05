@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.senac.ProjetoPontos.Domain.Entity.Cliente;
 import com.senac.ProjetoPontos.Domain.Entity.Comercio;
 import com.senac.ProjetoPontos.Domain.Entity.Endereco;
+import com.senac.ProjetoPontos.Domain.Entity.Produto;
 import com.senac.ProjetoPontos.Domain.Entity.Usuario;
 import com.senac.ProjetoPontos.Domain.Exception.NaoEncontradoException;
 import com.senac.ProjetoPontos.Domain.Repository.ClienteRepository;
@@ -99,5 +100,21 @@ public class ClienteUseCase {
 
     public boolean isComercioFavorito(UUID clienteId, UUID comercioId) {
         return clienteRepository.isComercioFavorito(clienteId, comercioId);
+    }
+
+    public void adicionarProdutoFavorito(UUID clienteId, UUID produtoId) {
+        clienteRepository.adicionarProdutoFavorito(clienteId, produtoId);
+    }
+
+    public void removerProdutoFavorito(UUID clienteId, UUID produtoId) {
+        clienteRepository.removerProdutoFavorito(clienteId, produtoId);
+    }
+
+    public List<Produto> listarProdutosFavoritos(UUID clienteId) {
+        return clienteRepository.findProdutosFavoritos(clienteId);
+    }
+
+    public boolean isProdutoFavorito(UUID clienteId, UUID produtoId) {
+        return clienteRepository.isProdutoFavorito(clienteId, produtoId);
     }
 }

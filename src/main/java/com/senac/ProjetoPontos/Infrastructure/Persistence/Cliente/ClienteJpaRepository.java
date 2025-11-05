@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.senac.ProjetoPontos.Infrastructure.Persistence.Comercio.ComercioEntity;
+import com.senac.ProjetoPontos.Infrastructure.Persistence.Produto.ProdutoEntity;
 
 public interface ClienteJpaRepository extends JpaRepository<ClienteEntity, UUID> {
 
@@ -32,5 +33,23 @@ public interface ClienteJpaRepository extends JpaRepository<ClienteEntity, UUID>
     @Query(value = "DELETE FROM cliente_comercio_favoritos WHERE cliente_id = :clienteId AND comercio_id = :comercioId", 
            nativeQuery = true)
     void removerComercioFavorito(@Param("clienteId") UUID clienteId, @Param("comercioId") UUID comercioId);
+
+    @Query("SELECT c.produtos FROM ClienteEntity c WHERE c.id = :clienteId")
+    List<ProdutoEntity> findProdutosFavoritosByClienteId(@Param("clienteId") UUID clienteId);
+    
+    @Query("SELECT CASE WHEN COUNT(pf) > 0 THEN true ELSE false END " +
+           "FROM ClienteEntity c JOIN c.produtos pf " +
+           "WHERE c.id = :clienteId AND pf.id = :produtoId")
+    boolean existsProdutoFavorito(@Param("clienteId") UUID clienteId, @Param("produtoId") UUID produtoId);
+    
+    @Modifying
+    @Query(value = "INSERT INTO cliente_produto_favoritos (cliente_id, produto_id) VALUES (:clienteId, :produtoId)", 
+           nativeQuery = true)
+    void adicionarProdutoFavorito(@Param("clienteId") UUID clienteId, @Param("produtoId") UUID produtoId);
+    
+    @Modifying
+    @Query(value = "DELETE FROM cliente_produto_favoritos WHERE cliente_id = :clienteId AND produto_id = :produtoId", 
+           nativeQuery = true)
+    void removerProdutoFavorito(@Param("clienteId") UUID clienteId, @Param("produtoId") UUID produtoId);
 } 
     
