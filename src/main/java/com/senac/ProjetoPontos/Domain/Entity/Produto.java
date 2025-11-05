@@ -22,7 +22,8 @@ public class Produto {
         this.comercio = comercio;
     }
 
-    protected Produto() { }
+    //protected Produto() { }
+    public Produto() { }
 
 
     public UUID getId() {

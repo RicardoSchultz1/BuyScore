@@ -31,6 +31,9 @@ public class PontoController {
     public ResponseEntity<Integer> getPontoByCodigo(@PathVariable String codigo, Authentication authentication) {
         UsuarioDetails userDetails = (UsuarioDetails) authentication.getPrincipal();
         UUID usuarioId = userDetails.getUsuario().getId();
+        if(codigo == null || codigo.trim().isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
         int pontos = pontosUseCase.getPontoByCodigo(codigo, usuarioId);
         return ResponseEntity.ok(pontos);
     }

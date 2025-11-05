@@ -15,6 +15,7 @@ import com.senac.ProjetoPontos.Domain.Repository.ComercioRepository;
 import com.senac.ProjetoPontos.Domain.Repository.PontoRepository;
 import com.senac.ProjetoPontos.Domain.Repository.UsuarioRepository;
 import com.senac.ProjetoPontos.Infrastructure.Config.SecureRandom;
+import com.senac.ProjetoPontos.InterfaceAdapters.DTO.CompraRequest;
 
 @Service
 public class PontosUseCase {
@@ -58,8 +59,13 @@ public class PontosUseCase {
         }
 
         Cliente cliente = clienteRepository.findByUsuarioId(usuarioId);
+        if (cliente == null) {
+            throw new NaoEncontradoException("Cliente não encontrado para o usuário: " + usuarioId);
+        }
+        cliente.setPontos(cliente.getPontos() + ponto.getPontos());
         ponto.setCliente(cliente);
         ponto.setCodigo(null);
+        clienteRepository.update(cliente);
         pontoRepository.update(ponto);
         return ponto.getPontos();
     }

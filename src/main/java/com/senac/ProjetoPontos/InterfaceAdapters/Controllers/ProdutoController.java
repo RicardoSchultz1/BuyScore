@@ -50,4 +50,9 @@ public class ProdutoController {
         produtoUseCase.deletarProdutoPorId(UUID.fromString(id));
     }
 
+    @GetMapping("/all")
+    public java.util.List<Produto> listarProdutos() {
+        return produtoUseCase.listarTodosProdutos();
+    }
+
 }

@@ -1,5 +1,6 @@
 package com.senac.ProjetoPontos.InterfaceAdapters.Controllers;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
@@ -27,6 +28,12 @@ public class ClienteController {
         this.usuarioUseCase = usuarioUseCase;
         this.jwtUtil = jwtUtil;
         this.clienteService = clienteService;
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<Cliente>> findAll() {
+        List<Cliente> clientes = clienteService.findAll();
+        return ResponseEntity.ok(clientes);
     }
 
     @GetMapping("/{id}")

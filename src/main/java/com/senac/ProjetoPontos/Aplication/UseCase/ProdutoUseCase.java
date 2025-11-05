@@ -68,4 +68,8 @@ public class ProdutoUseCase {
         produtoRepository.findByComercioId(comercioId);
         return produtoRepository.findByComercioId(comercioId);
     }
+
+    public List<Produto> listarTodosProdutos() {
+        return produtoRepository.findAll();
+    }
 }
