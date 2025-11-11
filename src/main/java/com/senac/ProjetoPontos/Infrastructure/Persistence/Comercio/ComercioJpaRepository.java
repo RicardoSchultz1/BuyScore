@@ -37,4 +37,7 @@ public interface ComercioJpaRepository extends JpaRepository<ComercioEntity, UUI
 		""", nativeQuery = true)
 	List<ComercioEntity> findTop5FromEachSector();
 
+	// Busca por nome (razão social ou nome do usuário) - case insensitive usando Spring JPA
+	List<ComercioEntity> findByRazaoSocialContainingIgnoreCaseOrUsuario_NomeContainingIgnoreCase(String razaoSocial, String nomeUsuario);
+
 }

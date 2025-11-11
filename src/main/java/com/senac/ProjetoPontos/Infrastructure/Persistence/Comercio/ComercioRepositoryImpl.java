@@ -99,4 +99,12 @@ public class ComercioRepositoryImpl implements ComercioRepository {
                 .map(entity -> mapper.map(entity, Comercio.class))
                 .toList();
     }
+
+    @Override
+    public java.util.List<Comercio> findByNomeContaining(String nome) {
+        return jpaRepository.findByRazaoSocialContainingIgnoreCaseOrUsuario_NomeContainingIgnoreCase(nome, nome)
+                .stream()
+                .map(entity -> mapper.map(entity, Comercio.class))
+                .toList();
+    }
 }

@@ -20,4 +20,7 @@ public interface ComercioRepository {
     List<Comercio> findTop5BySeguimento(String seguimento);
     List<Comercio> findTop5BySeguimentos(List<String> seguimentos);
     List<Comercio> findTop5FromEachSector();
+    
+    // Busca por nome (razão social ou nome do usuário)
+    List<Comercio> findByNomeContaining(String nome);
 }

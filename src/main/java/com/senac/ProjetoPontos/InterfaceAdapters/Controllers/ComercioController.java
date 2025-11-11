@@ -119,4 +119,18 @@ public class ComercioController {
         return ResponseEntity.ok(comercios);
     }
 
+    @GetMapping("/buscar")
+    public ResponseEntity<List<Comercio>> buscarComerciosPorNome(@RequestParam String nome) {
+        if (nome == null || nome.trim().isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
+        
+        try {
+            List<Comercio> comercios = useCase.buscarComerciosPorNome(nome);
+            return ResponseEntity.ok(comercios);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
 }

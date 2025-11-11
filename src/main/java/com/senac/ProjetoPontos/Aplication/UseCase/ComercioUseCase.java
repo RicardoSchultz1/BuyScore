@@ -126,4 +126,12 @@ public class ComercioUseCase {
         return comercioRepository.findTop5BySeguimentos(setores);
     }
 
+    // Busca por nome (razão social ou nome do usuário)
+    public List<Comercio> buscarComerciosPorNome(String nome) {
+        if (nome == null || nome.trim().isEmpty()) {
+            throw new IllegalArgumentException("Nome não pode ser vazio");
+        }
+        return comercioRepository.findByNomeContaining(nome.trim());
+    }
+
 }

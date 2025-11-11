@@ -295,6 +295,19 @@ Top 5 por múltiplos setores.
 
 **Response (200):** Array de objetos Comercio
 
+#### GET `/comercio/buscar`
+Busca comércios por nome (razão social ou nome do usuário).
+
+**Query Params:**
+- `nome` (String): Nome para busca (parcial, case-insensitive)
+
+**Exemplos:**
+- `/comercio/buscar?nome=pizza` - Encontra "Pizzaria do João", "PIZZA EXPRESS", etc.
+- `/comercio/buscar?nome=joão` - Encontra comércios com "joão" no nome ou razão social
+- `/comercio/buscar?nome=rest` - Encontra "Restaurante X", "FAST REST", etc.
+
+**Response (200):** Array de objetos Comercio
+
 ---
 
 ## 📦 Produtos
