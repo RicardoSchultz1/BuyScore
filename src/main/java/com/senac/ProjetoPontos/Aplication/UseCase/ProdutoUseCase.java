@@ -65,7 +65,6 @@ public class ProdutoUseCase {
     }
 
     public List<Produto> listarProdutosPorComercioId(UUID comercioId) {
-        produtoRepository.findByComercioId(comercioId);
         return produtoRepository.findByComercioId(comercioId);
     }
 

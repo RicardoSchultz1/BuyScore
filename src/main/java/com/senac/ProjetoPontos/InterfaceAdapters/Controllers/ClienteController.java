@@ -47,7 +47,7 @@ public class ClienteController {
     }
 
     @PostMapping
-    public ResponseEntity<ClienteWithTokenResponse> criarCliente(@RequestBody ClienteUserRequest request) {
+    public ResponseEntity<String> criarCliente(@RequestBody ClienteUserRequest request) {
         Endereco endereco = new Endereco(null, request.getCep(), request.getLogradouro(), request.getComplemento(), request.getBairro(), request.getCidade(), request.getNumero(), request.getUf());
         Usuario usuario = new Usuario(null, request.getNome(), request.getEmail(), request.getSenha(), 1, request.getFotoUsuario(), endereco);
 
@@ -55,7 +55,7 @@ public class ClienteController {
         // gerar token para o usuário recém-criado
         String token = jwtUtil.generateToken(salvo.getUsuario().getEmail());
         ClienteWithTokenResponse resp = new ClienteWithTokenResponse(salvo, token);
-        return ResponseEntity.ok(resp);
+        return ResponseEntity.ok(token);
     }
 
     /*@PostMapping

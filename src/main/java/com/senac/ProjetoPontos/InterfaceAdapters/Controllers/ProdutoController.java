@@ -55,4 +55,16 @@ public class ProdutoController {
         return produtoUseCase.listarTodosProdutos();
     }
 
+    @GetMapping("/meusprodutos")
+    public java.util.List<Produto> listarProdutosPorComercio(Authentication authentication) {
+        UsuarioDetails userDetails = (UsuarioDetails) authentication.getPrincipal();
+        UUID comercioId = userDetails.getUsuario().getId();
+        return produtoUseCase.listarProdutosPorComercioId(comercioId);
+    }
+
+    @GetMapping("/comercio/{comercioId}")
+    public java.util.List<Produto> listarProdutosPorComercioId(@PathVariable UUID comercioId) {
+        return produtoUseCase.listarProdutosPorComercioId(comercioId);
+    }
+
 }
