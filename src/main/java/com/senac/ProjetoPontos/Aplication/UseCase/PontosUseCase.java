@@ -1,7 +1,10 @@
 package com.senac.ProjetoPontos.Aplication.UseCase;
 
+import java.util.List;
 import java.util.UUID;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.senac.ProjetoPontos.Domain.Entity.Cliente;
@@ -16,9 +19,12 @@ import com.senac.ProjetoPontos.Domain.Repository.PontoRepository;
 import com.senac.ProjetoPontos.Domain.Repository.UsuarioRepository;
 import com.senac.ProjetoPontos.Infrastructure.Config.SecureRandom;
 import com.senac.ProjetoPontos.InterfaceAdapters.DTO.CompraRequest;
+import com.senac.ProjetoPontos.InterfaceAdapters.DTO.EstatisticaMensalResponse;
 
 @Service
 public class PontosUseCase {
+    
+    private static final Logger logger = LoggerFactory.getLogger(PontosUseCase.class);
     
     private final PontoRepository pontoRepository;
     private final UsuarioRepository usuarioRepository;
@@ -68,6 +74,26 @@ public class PontosUseCase {
         clienteRepository.update(cliente);
         pontoRepository.update(ponto);
         return ponto.getPontos();
+    }
+
+    // Estatística: clientes únicos que resgataram pontos por mês em um comércio
+    public List<EstatisticaMensalResponse> obterEstatisticasClientesPorMes(UUID usuarioId) {
+        logger.info("Buscando estatísticas para usuarioId: {}", usuarioId);
+        
+        // Busca o comércio do usuário logado
+        Comercio comercio = comercioRepository.findByUsuarioId(usuarioId).orElse(null);
+        if (comercio == null) {
+            logger.warn("Comércio não encontrado para usuário: {}", usuarioId);
+            throw new NaoEncontradoException("Comércio não encontrado para o usuário: " + usuarioId);
+        }
+        
+        logger.info("Comércio encontrado: ID={}, Nome={}", comercio.getId(), comercio.getRazaoSocial());
+        
+        // Usa o ID do comércio para buscar as estatísticas
+        List<EstatisticaMensalResponse> resultado = pontoRepository.contarClientesPorMesPorComercio(comercio.getId());
+        logger.info("Resultado da query: {} registros encontrados", resultado.size());
+        
+        return resultado;
     }
 
 }

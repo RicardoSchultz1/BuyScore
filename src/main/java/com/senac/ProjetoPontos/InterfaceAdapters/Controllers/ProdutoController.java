@@ -5,6 +5,7 @@ import java.util.UUID;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import com.senac.ProjetoPontos.Aplication.UseCase.ComercioUseCase;
 import com.senac.ProjetoPontos.Aplication.UseCase.ProdutoUseCase;
 import com.senac.ProjetoPontos.Domain.Entity.Produto;
 import com.senac.ProjetoPontos.Infrastructure.Security.UsuarioDetails;
@@ -14,9 +15,11 @@ import com.senac.ProjetoPontos.Infrastructure.Security.UsuarioDetails;
 public class ProdutoController {
 
     private final ProdutoUseCase produtoUseCase;
+    private final ComercioUseCase comercioUseCase;
 
-    public ProdutoController(ProdutoUseCase produtoUseCase) {
+    public ProdutoController(ProdutoUseCase produtoUseCase, ComercioUseCase comercioUseCase) {
         this.produtoUseCase = produtoUseCase;
+        this.comercioUseCase = comercioUseCase;
     }
 
     @PutMapping("/desativar/{id}")
@@ -58,7 +61,7 @@ public class ProdutoController {
     @GetMapping("/meusprodutos")
     public java.util.List<Produto> listarProdutosPorComercio(Authentication authentication) {
         UsuarioDetails userDetails = (UsuarioDetails) authentication.getPrincipal();
-        UUID comercioId = userDetails.getUsuario().getId();
+        UUID comercioId = comercioUseCase.buscarComercioPorUsuarioId(userDetails.getUsuario().getId()).getId();
         return produtoUseCase.listarProdutosPorComercioId(comercioId);
     }
 

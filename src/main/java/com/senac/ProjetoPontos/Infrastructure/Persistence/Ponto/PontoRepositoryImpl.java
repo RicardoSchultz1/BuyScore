@@ -8,9 +8,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Repository;
 
 import com.senac.ProjetoPontos.Domain.Entity.Ponto;
-
 import com.senac.ProjetoPontos.Domain.Exception.NaoEncontradoException;
 import com.senac.ProjetoPontos.Domain.Repository.PontoRepository;
+import com.senac.ProjetoPontos.InterfaceAdapters.DTO.EstatisticaMensalResponse;
 
 @Repository
 public class PontoRepositoryImpl implements PontoRepository {
@@ -63,6 +63,20 @@ public class PontoRepositoryImpl implements PontoRepository {
         return jpaRepository.getByCodigo(codigo)
                 .map(entity -> mapper.map(entity, Ponto.class))
                 .orElseThrow(() -> new NaoEncontradoException(codigo));
+    }
+
+    @Override
+    public List<EstatisticaMensalResponse> contarClientesPorMesPorComercio(UUID comercioId) {
+        List<Object[]> resultados = jpaRepository.contarClientesPorMesPorComercio(comercioId);
+        
+        return resultados.stream()
+                .map(linha -> {
+                    int mes = (Integer) linha[0];
+                    int ano = (Integer) linha[1];
+                    int quantidade = ((Number) linha[2]).intValue();
+                    return new EstatisticaMensalResponse(mes, ano, quantidade);
+                })
+                .collect(Collectors.toList());
     }
 
 }

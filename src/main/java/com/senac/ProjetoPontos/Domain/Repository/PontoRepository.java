@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import com.senac.ProjetoPontos.Domain.Entity.Ponto;
+import com.senac.ProjetoPontos.InterfaceAdapters.DTO.EstatisticaMensalResponse;
 
 public interface PontoRepository {
 
@@ -14,4 +15,6 @@ public interface PontoRepository {
     void delete(UUID id);
     Ponto getByCodigo(String codigo);
     
+    // Estatísticas: clientes únicos que resgataram pontos por mês em um comércio
+    List<EstatisticaMensalResponse> contarClientesPorMesPorComercio(UUID comercioId);
 }
