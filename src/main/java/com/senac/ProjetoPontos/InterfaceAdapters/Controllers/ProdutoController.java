@@ -9,6 +9,7 @@ import com.senac.ProjetoPontos.Aplication.UseCase.ComercioUseCase;
 import com.senac.ProjetoPontos.Aplication.UseCase.ProdutoUseCase;
 import com.senac.ProjetoPontos.Domain.Entity.Produto;
 import com.senac.ProjetoPontos.Infrastructure.Security.UsuarioDetails;
+import com.senac.ProjetoPontos.InterfaceAdapters.DTO.ProdutoResponse;
 
 @RestController
 @RequestMapping("/produto")
@@ -59,10 +60,20 @@ public class ProdutoController {
     }
 
     @GetMapping("/meusprodutos")
-    public java.util.List<Produto> listarProdutosPorComercio(Authentication authentication) {
+    public java.util.List<ProdutoResponse> listarProdutosPorComercio(Authentication authentication) {
         UsuarioDetails userDetails = (UsuarioDetails) authentication.getPrincipal();
         UUID comercioId = comercioUseCase.buscarComercioPorUsuarioId(userDetails.getUsuario().getId()).getId();
-        return produtoUseCase.listarProdutosPorComercioId(comercioId);
+        return produtoUseCase.listarProdutosPorComercioId(comercioId)
+                .stream()
+                .map(produto -> new ProdutoResponse(
+                    produto.getId(),
+                    produto.getNome(),
+                    produto.getDescricao(),
+                    produto.getValor(),
+                    produto.isAtivo(),
+                    produto.getFotoProduto()
+                ))
+                .collect(java.util.stream.Collectors.toList());
     }
 
     @GetMapping("/comercio/{comercioId}")
