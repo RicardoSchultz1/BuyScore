@@ -19,6 +19,7 @@ import com.senac.ProjetoPontos.Infrastructure.Security.JwtUtil;
 import com.senac.ProjetoPontos.Infrastructure.Security.UsuarioDetails;
 import com.senac.ProjetoPontos.InterfaceAdapters.DTO.ClienteUserRequest;
 import com.senac.ProjetoPontos.InterfaceAdapters.DTO.ClienteWithTokenResponse;
+import com.senac.ProjetoPontos.InterfaceAdapters.DTO.TokenResponse;
 
 @RestController
 @RequestMapping("/cliente")
@@ -47,14 +48,14 @@ public class ClienteController {
     }
 
     @PostMapping
-    public ResponseEntity<String> criarCliente(@RequestBody ClienteUserRequest request) {
+    public ResponseEntity<TokenResponse> criarCliente(@RequestBody ClienteUserRequest request) {
         Endereco endereco = new Endereco(null, request.getCep(), request.getLogradouro(), request.getComplemento(), request.getBairro(), request.getCidade(), request.getNumero(), request.getUf());
         Usuario usuario = new Usuario(null, request.getNome(), request.getEmail(), request.getSenha(), 1, request.getFotoUsuario(), endereco);
 
         Cliente salvo = clienteService.salvarClienteEntity(usuario);
         // gerar token para o usuário recém-criado
-        String token = jwtUtil.generateToken(salvo.getUsuario().getEmail());
-        ClienteWithTokenResponse resp = new ClienteWithTokenResponse(salvo, token);
+        TokenResponse token = new TokenResponse(jwtUtil.generateToken(salvo.getUsuario().getEmail()));
+
         return ResponseEntity.ok(token);
     }
 

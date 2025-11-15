@@ -11,10 +11,11 @@ public class Compra {
     private Double valorTotal;
     private LocalDateTime dataCompra;
     private String status; // "PENDENTE", "CONFIRMADA", "CANCELADA"
+    private String codigo; // Código de 6 letras para identificar a compra
 
     public Compra() {}
 
-    public Compra(UUID id, Cliente cliente, Produto produto, Integer quantidade, Double valorTotal, LocalDateTime dataCompra, String status) {
+    public Compra(UUID id, Cliente cliente, Produto produto, Integer quantidade, Double valorTotal, LocalDateTime dataCompra, String status, String codigo) {
         this.id = id;
         this.cliente = cliente;
         this.produto = produto;
@@ -22,6 +23,7 @@ public class Compra {
         this.valorTotal = valorTotal;
         this.dataCompra = dataCompra;
         this.status = status;
+        this.codigo = codigo;
     }
 
     // Getters e Setters
@@ -81,6 +83,14 @@ public class Compra {
         this.status = status;
     }
 
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
+    }
+
     @Override
     public String toString() {
         return "Compra{" +
@@ -91,6 +101,7 @@ public class Compra {
                 ", valorTotal=" + valorTotal +
                 ", dataCompra=" + dataCompra +
                 ", status='" + status + '\'' +
+                ", codigo='" + codigo + '\'' +
                 '}';
     }
 }

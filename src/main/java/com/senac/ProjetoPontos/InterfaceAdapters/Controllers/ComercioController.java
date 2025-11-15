@@ -76,49 +76,6 @@ public class ComercioController {
         return ResponseEntity.ok(comercios);
     }
 
-    @GetMapping("/top5/setor/{seguimento}")
-    public ResponseEntity<List<Comercio>> buscarTop5PorSetor(@PathVariable String seguimento) {
-        if (seguimento == null || seguimento.trim().isEmpty()) {
-            return ResponseEntity.badRequest().build();
-        }
-        if (!seguimento.matches("[a-zA-ZÀ-ÿ0-9\\s\\-_]+")) {
-            return ResponseEntity.badRequest().build();
-        }
-        
-        List<Comercio> comercios = useCase.buscarTop5ComerciosPorSeguimento(seguimento.trim());
-        return ResponseEntity.ok(comercios);
-    }
-
-    @GetMapping("/top5/setores-principais")
-    public ResponseEntity<List<Comercio>> buscarTop5SetoresPrincipais() {
-        List<Comercio> comercios = useCase.buscarTop5RestauranteFarmaciaOutros();
-        return ResponseEntity.ok(comercios);
-    }
-
-    @GetMapping("/top5/cada-setor")
-    public ResponseEntity<List<Comercio>> buscarTop5DeCadaSetor() {
-        List<Comercio> comercios = useCase.buscarTop5DeCadaSetor();
-        return ResponseEntity.ok(comercios);
-    }
-
-    @GetMapping("/top5/setores")
-    public ResponseEntity<List<Comercio>> buscarTop5PorSetores(@RequestParam List<String> setores) {
-        // Validação adicional para lista de setores
-        if (setores == null || setores.isEmpty()) {
-            return ResponseEntity.badRequest().build();
-        }
-        
-        // Validar cada setor da lista
-        for (String setor : setores) {
-            if (setor == null || setor.trim().isEmpty() || !setor.matches("[a-zA-ZÀ-ÿ0-9\\s\\-_]+")) {
-                return ResponseEntity.badRequest().build();
-            }
-        }
-        
-        List<Comercio> comercios = useCase.buscarTop5ComerciosMultiplosSeguimentos(setores);
-        return ResponseEntity.ok(comercios);
-    }
-
     @GetMapping("/buscar")
     public ResponseEntity<List<Comercio>> buscarComerciosPorNome(@RequestParam String nome) {
         if (nome == null || nome.trim().isEmpty()) {
@@ -132,5 +89,7 @@ public class ComercioController {
             return ResponseEntity.badRequest().build();
         }
     }
+
+    
 
 }

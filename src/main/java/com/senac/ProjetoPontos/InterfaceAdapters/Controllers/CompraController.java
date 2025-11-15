@@ -13,6 +13,7 @@ import com.senac.ProjetoPontos.Aplication.UseCase.CompraUseCase;
 import com.senac.ProjetoPontos.Domain.Entity.Compra;
 import com.senac.ProjetoPontos.Infrastructure.Security.UsuarioDetails;
 import com.senac.ProjetoPontos.InterfaceAdapters.DTO.CompraRequest;
+import com.senac.ProjetoPontos.InterfaceAdapters.DTO.CompraResponse;
 
 @RestController
 @RequestMapping("/compra")
@@ -28,16 +29,16 @@ public class CompraController {
     }
 
     @PostMapping
-    public ResponseEntity<Compra> criarCompra(@RequestBody CompraRequest request, Authentication authentication) {
+    public ResponseEntity<String> criarCompra(@RequestBody CompraRequest request, Authentication authentication) {
         UsuarioDetails userDetails = (UsuarioDetails) authentication.getPrincipal();
         UUID usuarioId = userDetails.getUsuario().getId();
 
-        Compra compra = compraUseCase.criarCompra(
+        String codigo = compraUseCase.criarCompraComCodigo(
             clienteUseCase.buscarClientePorUsuarioId(usuarioId).getId(), 
             request.getProdutoId(), 
             request.getQuantidade()
         );
-        return ResponseEntity.status(HttpStatus.CREATED).body(compra);
+        return ResponseEntity.status(HttpStatus.CREATED).body(codigo);
     }
 
     @GetMapping("/all")
@@ -70,15 +71,15 @@ public class CompraController {
         return ResponseEntity.ok(compras);
     }
 
-    @PutMapping("/{id}/confirmar")
-    public ResponseEntity<Compra> confirmarCompra(@PathVariable UUID id) {
-        Compra compra = compraUseCase.confirmarCompra(id);
+    @PutMapping("/confirmar/{codigo}")
+    public ResponseEntity<Compra> confirmarCompra(@PathVariable String codigo) {
+        Compra compra = compraUseCase.confirmarCompraPorCodigo(codigo);
         return ResponseEntity.ok(compra);
     }
 
-    @PutMapping("/{id}/cancelar")
-    public ResponseEntity<Compra> cancelarCompra(@PathVariable UUID id) {
-        Compra compra = compraUseCase.cancelarCompra(id);
+    @PutMapping("/cancelar/{codigo}")
+    public ResponseEntity<Compra> cancelarCompra(@PathVariable String codigo) {
+        Compra compra = compraUseCase.cancelarCompraPorCodigo(codigo);
         return ResponseEntity.ok(compra);
     }
 
@@ -86,5 +87,10 @@ public class CompraController {
     public ResponseEntity<Void> deletarCompra(@PathVariable UUID id) {
         compraUseCase.deletarCompra(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/codigo/{codigo}")
+    public ResponseEntity<CompraResponse> buscarCompraPorCodigo(@PathVariable String codigo) {
+        return ResponseEntity.ok(compraUseCase.buscarCompraPorCodigo(codigo));
     }
 }

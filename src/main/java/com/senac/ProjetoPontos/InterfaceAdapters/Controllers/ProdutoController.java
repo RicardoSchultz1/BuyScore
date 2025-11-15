@@ -46,8 +46,10 @@ public class ProdutoController {
     }
 
     @PutMapping
-    public Produto atualizarProduto(@RequestBody Produto produto) {
-        return produtoUseCase.atualizarProduto(produto);
+    public Produto atualizarProduto(@RequestBody Produto produto, Authentication authentication ) {
+        UsuarioDetails userDetails = (UsuarioDetails) authentication.getPrincipal();
+        UUID usuarioId = userDetails.getUsuario().getId();
+        return produtoUseCase.atualizarProduto(produto, usuarioId);
     }
     @DeleteMapping("/{id}")
     public void deletarProduto(@PathVariable("id") String id) {

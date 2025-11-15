@@ -55,7 +55,8 @@ public class ProdutoUseCase {
 
     }
 
-    public Produto atualizarProduto(Produto produto) {
+    public Produto atualizarProduto(Produto produto, UUID usuarioId) {
+        produto.setComercio(comercioUseCase.buscarComercioPorUsuarioId(usuarioId));
         produtoRepository.update(produto);
         return produto;
     }

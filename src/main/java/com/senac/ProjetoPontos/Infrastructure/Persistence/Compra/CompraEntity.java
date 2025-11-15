@@ -28,11 +28,13 @@ public class CompraEntity {
     private LocalDateTime dataCompra;
     @Column(name = "status", nullable = false)
     private String status;
+    @Column(name = "codigo", nullable = false, unique = true, length = 10)
+    private String codigo;
 
     public CompraEntity() {}
 
     public CompraEntity(UUID id, ClienteEntity cliente, ProdutoEntity produto, Integer quantidade, 
-                       Double valorTotal, LocalDateTime dataCompra, String status) {
+                       Double valorTotal, LocalDateTime dataCompra, String status, String codigo) {
         this.id = id;
         this.cliente = cliente;
         this.produto = produto;
@@ -40,6 +42,7 @@ public class CompraEntity {
         this.valorTotal = valorTotal;
         this.dataCompra = dataCompra;
         this.status = status;
+        this.codigo = codigo;
     }
 
     // Getters e Setters
@@ -97,5 +100,13 @@ public class CompraEntity {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
     }
 }
