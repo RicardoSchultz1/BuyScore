@@ -24,4 +24,18 @@ public interface PontoJpaRepository extends JpaRepository<PontoEntity, UUID> {
         ORDER BY YEAR(p.data) DESC, MONTH(p.data) DESC
         """, nativeQuery = true)
     List<Object[]> contarClientesPorMesPorComercio(@Param("comercioId") UUID comercioId);
+    
+    // Query para somar total de pontos resgatados por mês em um comércio
+    @Query(value = """
+        SELECT 
+            MONTH(p.data) as mes,
+            YEAR(p.data) as ano,
+            SUM(p.pontos) as totalPontosResgatados
+        FROM ponto p
+        WHERE p.comercio_id = :comercioId 
+        AND p.cliente_id IS NOT NULL
+        GROUP BY YEAR(p.data), MONTH(p.data)
+        ORDER BY YEAR(p.data) DESC, MONTH(p.data) DESC
+        """, nativeQuery = true)
+    List<Object[]> somarPontosResgatadosPorMesPorComercio(@Param("comercioId") UUID comercioId);
 }

@@ -24,6 +24,7 @@ import com.senac.ProjetoPontos.Infrastructure.Config.SecureRandom;
 import com.senac.ProjetoPontos.InterfaceAdapters.DTO.CompraRequest;
 import com.senac.ProjetoPontos.InterfaceAdapters.DTO.EstatisticaMensalResponse;
 import com.senac.ProjetoPontos.InterfaceAdapters.DTO.EstatisticaCompraMensalResponse;
+import com.senac.ProjetoPontos.InterfaceAdapters.DTO.EstatisticaPontosResgatadosResponse;
 
 @Service
 public class PontosUseCase {
@@ -145,6 +146,26 @@ public class PontosUseCase {
         // Usa o ID do comércio para buscar as estatísticas de compras
         List<EstatisticaCompraMensalResponse> resultado = compraRepository.contarComprasPorMesPorComercio(comercio.getId());
         logger.info("Resultado da query de compras: {} registros encontrados", resultado.size());
+        
+        return resultado;
+    }
+
+    // Estatística: soma total de pontos resgatados por mês em um comércio
+    public List<EstatisticaPontosResgatadosResponse> obterSomaPontosResgatadosPorMes(UUID usuarioId) {
+        logger.info("Buscando soma de pontos resgatados por mês para usuarioId: {}", usuarioId);
+        
+        // Busca o comércio do usuário logado
+        Comercio comercio = comercioRepository.findByUsuarioId(usuarioId).orElse(null);
+        if (comercio == null) {
+            logger.warn("Comércio não encontrado para usuário: {}", usuarioId);
+            throw new NaoEncontradoException("Comércio não encontrado para o usuário: " + usuarioId);
+        }
+        
+        logger.info("Comércio encontrado para soma de pontos: ID={}, Nome={}", comercio.getId(), comercio.getRazaoSocial());
+        
+        // Usa o ID do comércio para buscar a soma de pontos resgatados
+        List<EstatisticaPontosResgatadosResponse> resultado = pontoRepository.somarPontosResgatadosPorMesPorComercio(comercio.getId());
+        logger.info("Resultado da query de soma de pontos: {} registros encontrados", resultado.size());
         
         return resultado;
     }

@@ -13,6 +13,7 @@ import com.senac.ProjetoPontos.Domain.Entity.Ponto;
 import com.senac.ProjetoPontos.Domain.Exception.NaoEncontradoException;
 import com.senac.ProjetoPontos.Domain.Repository.PontoRepository;
 import com.senac.ProjetoPontos.InterfaceAdapters.DTO.EstatisticaMensalResponse;
+import com.senac.ProjetoPontos.InterfaceAdapters.DTO.EstatisticaPontosResgatadosResponse;
 
 @Repository
 public class PontoRepositoryImpl implements PontoRepository {
@@ -104,6 +105,44 @@ public class PontoRepositoryImpl implements PontoRepository {
         } catch (Exception e) {
             logger.error("Erro ao executar query de estatísticas para comercioId: {}", comercioId, e);
             throw new RuntimeException("Erro ao buscar estatísticas", e);
+        }
+    }
+
+    @Override
+    public List<EstatisticaPontosResgatadosResponse> somarPontosResgatadosPorMesPorComercio(UUID comercioId) {
+        logger.info("Executando query de soma de pontos resgatados para comercioId: {}", comercioId);
+        
+        try {
+            List<Object[]> resultados = jpaRepository.somarPontosResgatadosPorMesPorComercio(comercioId);
+            logger.info("Query de soma de pontos executada com sucesso. Resultados encontrados: {}", resultados.size());
+            
+            if (resultados.isEmpty()) {
+                logger.warn("Nenhum resultado encontrado na query de soma de pontos para comercioId: {}", comercioId);
+                return List.of(); // Retorna lista vazia em vez de null
+            }
+            
+            List<EstatisticaPontosResgatadosResponse> response = resultados.stream()
+                    .map(linha -> {
+                        try {
+                            // Cast seguro para todos os tipos usando Number
+                            int mes = ((Number) linha[0]).intValue();
+                            int ano = ((Number) linha[1]).intValue();
+                            Long totalPontos = ((Number) linha[2]).longValue();
+                            logger.debug("Processando linha soma pontos: mes={}, ano={}, totalPontos={}", mes, ano, totalPontos);
+                            return new EstatisticaPontosResgatadosResponse(mes, ano, totalPontos);
+                        } catch (Exception e) {
+                            logger.error("Erro ao processar linha da query de soma de pontos: {}", linha, e);
+                            throw new RuntimeException("Erro ao processar resultado da query de soma de pontos", e);
+                        }
+                    })
+                    .collect(Collectors.toList());
+            
+            logger.info("Soma de pontos resgatados processada com sucesso. Total de registros: {}", response.size());
+            return response;
+            
+        } catch (Exception e) {
+            logger.error("Erro ao executar query de soma de pontos para comercioId: {}", comercioId, e);
+            throw new RuntimeException("Erro ao buscar soma de pontos resgatados", e);
         }
     }
 

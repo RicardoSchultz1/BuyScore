@@ -18,6 +18,7 @@ import com.senac.ProjetoPontos.Domain.Entity.ClientePontoComercio;
 import com.senac.ProjetoPontos.Infrastructure.Security.UsuarioDetails;
 import com.senac.ProjetoPontos.InterfaceAdapters.DTO.EstatisticaMensalResponse;
 import com.senac.ProjetoPontos.InterfaceAdapters.DTO.EstatisticaCompraMensalResponse;
+import com.senac.ProjetoPontos.InterfaceAdapters.DTO.EstatisticaPontosResgatadosResponse;
 
 @RestController
 @RequestMapping("/ponto")
@@ -118,6 +119,30 @@ public class PontoController {
             
         } catch (Exception e) {
             logger.error("Erro ao buscar pontos por comércio", e);
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    @GetMapping("/estatisticas/pontos-resgatados")
+    public ResponseEntity<List<EstatisticaPontosResgatadosResponse>> obterSomaPontosResgatadosPorMes(Authentication authentication) {
+        try {
+            UsuarioDetails userDetails = (UsuarioDetails) authentication.getPrincipal();
+            UUID usuarioId = userDetails.getUsuario().getId();
+            
+            logger.info("Iniciando busca de soma de pontos resgatados para usuário: {}", usuarioId);
+            
+            List<EstatisticaPontosResgatadosResponse> estatisticas = pontosUseCase.obterSomaPontosResgatadosPorMes(usuarioId);
+            
+            if (estatisticas.isEmpty()) {
+                logger.info("Nenhuma estatística de pontos resgatados encontrada para usuário: {}", usuarioId);
+                return ResponseEntity.ok(estatisticas); // Retorna 200 com lista vazia
+            }
+            
+            logger.info("Estatísticas de pontos resgatados encontradas: {} registros para usuário: {}", estatisticas.size(), usuarioId);
+            return ResponseEntity.ok(estatisticas);
+            
+        } catch (Exception e) {
+            logger.error("Erro ao buscar estatísticas de pontos resgatados", e);
             return ResponseEntity.internalServerError().build();
         }
     }
