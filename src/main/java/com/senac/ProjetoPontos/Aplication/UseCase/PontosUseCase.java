@@ -106,10 +106,6 @@ public class PontosUseCase {
         ponto.setCodigo(null);
         pontoRepository.update(ponto);
 
-        // Também mantém compatibilidade com pontos globais (opcional)
-        cliente.setPontos(cliente.getPontos() + ponto.getPontos());
-        clienteRepository.update(cliente);
-
         return ponto.getPontos();
     }
 
