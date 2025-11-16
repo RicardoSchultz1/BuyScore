@@ -19,7 +19,7 @@ public class ProdutoEntity {
 	private String descricao;
     @Column(nullable=false)
 	private int valor;
-    @Column(nullable=false, length = 6000)
+    @Column(nullable=false, columnDefinition = "LONGTEXT")
 	private String fotoProduto;
     @ManyToOne
     @JoinColumn(name = "id_comercio", referencedColumnName = "id")

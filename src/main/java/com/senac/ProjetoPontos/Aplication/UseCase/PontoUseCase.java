@@ -12,6 +12,7 @@ import com.senac.ProjetoPontos.Domain.Exception.NaoEncontradoException;
 import com.senac.ProjetoPontos.Domain.Repository.ClienteRepository;
 import com.senac.ProjetoPontos.Domain.Repository.ClientePontoComercioRepository;
 import com.senac.ProjetoPontos.Domain.Repository.ComercioRepository;
+import com.senac.ProjetoPontos.InterfaceAdapters.DTO.ComercioComPontosResponse;
 
 @Service
 public class PontoUseCase {
@@ -122,5 +123,42 @@ public class PontoUseCase {
         }
 
         return clientePontoComercioRepository.findByComercio(comercio);
+    }
+
+
+    public List<ComercioComPontosResponse> buscarTopComerciosPorSeguimento(
+            UUID usuarioId, String seguimento, int limite) {
+        
+        Cliente cliente = clienteRepository.findByUsuarioId(usuarioId);
+        if (cliente == null) {
+            throw new NaoEncontradoException("Cliente não encontrado para o usuário: " + usuarioId);
+        }
+
+        // Buscar todos os pontos do cliente
+        List<ClientePontoComercio> pontosDoCliente = clientePontoComercioRepository.findByCliente(cliente);
+
+        // Filtrar por seguimento, ordenar por pontos (maior para menor) e limitar quantidade
+        return pontosDoCliente.stream()
+            .filter(pontoComercio -> {
+                Comercio comercio = pontoComercio.getComercio();
+                // Verifica se o comércio é do seguimento desejado e se tem pontos > 0
+                return seguimento.equalsIgnoreCase(comercio.getSeguimento()) && 
+                       pontoComercio.getPontos() > 0;
+            })
+            .sorted((p1, p2) -> Integer.compare(p2.getPontos(), p1.getPontos())) // Ordena por pontos DESC
+            .limit(limite) // Limita a quantidade
+            .map(pontoComercio -> {
+                Comercio comercio = pontoComercio.getComercio();
+                String fotoUsuario = comercio.getUsuario() != null ? comercio.getUsuario().getFotoUsuario() : null;
+                return new ComercioComPontosResponse(
+                    comercio.getId(),
+                    comercio.getRazaoSocial(),
+                    comercio.getDescricao(),
+                    comercio.getSeguimento(),
+                    fotoUsuario,
+                    pontoComercio.getPontos()
+                );
+            })
+            .collect(java.util.stream.Collectors.toList());
     }
 }

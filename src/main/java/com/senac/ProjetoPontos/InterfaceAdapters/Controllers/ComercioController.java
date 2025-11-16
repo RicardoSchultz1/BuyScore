@@ -8,14 +8,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.senac.ProjetoPontos.Aplication.UseCase.ComercioUseCase;
+import com.senac.ProjetoPontos.Aplication.UseCase.PontoUseCase;
 import com.senac.ProjetoPontos.Aplication.UseCase.UsuarioUseCase;
 import com.senac.ProjetoPontos.Domain.Entity.Comercio;
 import com.senac.ProjetoPontos.Domain.Entity.Endereco;
-import com.senac.ProjetoPontos.Domain.Entity.Ponto;
 import com.senac.ProjetoPontos.Domain.Entity.Usuario;
 import com.senac.ProjetoPontos.InterfaceAdapters.DTO.ComercioUserRequest;
 import com.senac.ProjetoPontos.InterfaceAdapters.DTO.ComercioWithTokenResponse;
+import com.senac.ProjetoPontos.InterfaceAdapters.DTO.ComercioComPontosResponse;
 import com.senac.ProjetoPontos.Infrastructure.Security.JwtUtil;
+import com.senac.ProjetoPontos.Infrastructure.Security.UsuarioDetails;
 
 @RestController
 @RequestMapping("/comercio")
@@ -23,17 +25,34 @@ public class ComercioController {
     
     private final ComercioUseCase useCase;
     private final UsuarioUseCase usuarioUseCase;
+    private final PontoUseCase pontoUseCase;
     private final JwtUtil jwtUtil;
 
-    public ComercioController(ComercioUseCase useCase, UsuarioUseCase usuarioUseCase, JwtUtil jwtUtil) {
+    public ComercioController(ComercioUseCase useCase, UsuarioUseCase usuarioUseCase, 
+                             PontoUseCase pontoUseCase, JwtUtil jwtUtil) {
         this.useCase = useCase;
         this.usuarioUseCase = usuarioUseCase;
+        this.pontoUseCase = pontoUseCase;
         this.jwtUtil = jwtUtil;
     }
 
     @GetMapping("/{id}")
     public Comercio buscarComercio(@PathVariable UUID id) {
         return useCase.buscarComercio(id);
+    }
+
+    @GetMapping
+    public ComercioUserRequest buscarComercioByToken(Authentication authentication) {
+        UUID id = ((UsuarioDetails) authentication.getPrincipal()).getUsuario().getId();
+        Comercio comercio = useCase.buscarComercioPorUsuarioId(id);
+        return ComercioUserRequest.fromComercio(comercio);
+    }
+
+    @PutMapping
+    public Comercio atualizarComercio(@RequestBody ComercioUserRequest request, Authentication authentication) {
+        UUID id = ((UsuarioDetails) authentication.getPrincipal()).getUsuario().getId();
+
+        return useCase.atualizarComercio(id, request);
     }
 
     @PostMapping
@@ -90,6 +109,25 @@ public class ComercioController {
         }
     }
 
-    
 
+    @GetMapping("/top-pontos")
+    public ResponseEntity<List<ComercioComPontosResponse>> buscarTopComerciosPorPontos(
+            @RequestParam String seguimento,
+            @RequestParam int limite,
+            Authentication authentication) {
+        
+        try {
+            UsuarioDetails userDetails = (UsuarioDetails) authentication.getPrincipal();
+            UUID usuarioId = userDetails.getUsuario().getId();
+            
+            List<ComercioComPontosResponse> comercios = pontoUseCase
+                .buscarTopComerciosPorSeguimento(usuarioId, seguimento, limite);
+            
+            return ResponseEntity.ok(comercios);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
+    }
 }

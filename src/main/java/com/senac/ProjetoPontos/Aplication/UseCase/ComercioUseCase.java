@@ -13,8 +13,8 @@ import com.senac.ProjetoPontos.Domain.Entity.Usuario;
 import com.senac.ProjetoPontos.Domain.Exception.NaoEncontradoException;
 import com.senac.ProjetoPontos.Domain.Repository.ComercioRepository;
 import com.senac.ProjetoPontos.Domain.Repository.EnderecoRepository;
-
 import com.senac.ProjetoPontos.Domain.Repository.UsuarioRepository;
+import com.senac.ProjetoPontos.InterfaceAdapters.DTO.ComercioUserRequest;
 
 @Service
 public class ComercioUseCase {
@@ -96,6 +96,68 @@ public class ComercioUseCase {
 
     public void atualizarComercio(Comercio comercio) {
         comercioRepository.update(comercio);
+    }
+
+    public Comercio atualizarComercio(UUID usuarioId, ComercioUserRequest request) {
+        // Buscar o comércio pelo usuário ID
+        Comercio comercioExistente = buscarComercioPorUsuarioId(usuarioId);
+        
+        // Atualizar os dados do comércio
+        if (request.getRazaoSocial() != null) {
+            comercioExistente.setRazaoSocial(request.getRazaoSocial());
+        }
+        if (request.getDescricao() != null) {
+            comercioExistente.setDescricao(request.getDescricao());
+        }
+        if (request.getSeguimento() != null) {
+            comercioExistente.setSeguimento(request.getSeguimento());
+        }
+        
+        // Atualizar dados do usuário
+        Usuario usuario = comercioExistente.getUsuario();
+        if (request.getNome() != null) {
+            usuario.setNome(request.getNome());
+        }
+        if (request.getEmail() != null) {
+            usuario.setEmail(request.getEmail());
+        }
+        if (request.getFotoUsuario() != null) {
+            usuario.setFotoUsuario(request.getFotoUsuario());
+        }
+        if (request.getSenha() != null && !request.getSenha().isEmpty()) {
+            usuario.setSenha(new BCryptPasswordEncoder().encode(request.getSenha()));
+        }
+        
+        // Atualizar endereço
+        Endereco endereco = usuario.getEndereco();
+        if (request.getCep() != null) {
+            endereco.setCep(request.getCep());
+        }
+        if (request.getLogradouro() != null) {
+            endereco.setLogradouro(request.getLogradouro());
+        }
+        if (request.getComplemento() != null) {
+            endereco.setComplemento(request.getComplemento());
+        }
+        if (request.getBairro() != null) {
+            endereco.setBairro(request.getBairro());
+        }
+        if (request.getCidade() != null) {
+            endereco.setCidade(request.getCidade());
+        }
+        if (request.getUf() != null) {
+            endereco.setUf(request.getUf());
+        }
+        if (request.getNumero() > 0) {
+            endereco.setNumero(request.getNumero());
+        }
+        
+        // Salvar as atualizações
+        enderecoRepository.save(endereco);
+        usuarioRepository.save(usuario);
+        comercioRepository.update(comercioExistente);
+        
+        return comercioExistente;
     }
     public void deletarComercio(UUID id) {
         comercioRepository.delete(id);

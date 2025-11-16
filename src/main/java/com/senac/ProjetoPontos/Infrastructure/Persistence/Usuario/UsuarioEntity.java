@@ -24,7 +24,7 @@ public class UsuarioEntity {
     private EnderecoEntity endereco;
 	@Column(nullable= false)
 	private int perfilUsuario;
-	@Column(nullable= false, length = 6000)
+	@Column(nullable= false, columnDefinition = "LONGTEXT")
 	private String fotoUsuario;
 
     protected UsuarioEntity() {}

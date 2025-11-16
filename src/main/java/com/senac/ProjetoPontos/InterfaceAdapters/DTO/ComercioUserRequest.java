@@ -126,4 +126,27 @@ public class ComercioUserRequest {
         this.uf = uf;
     }
 
+    public static ComercioUserRequest fromComercio(com.senac.ProjetoPontos.Domain.Entity.Comercio comercio) {
+        com.senac.ProjetoPontos.Domain.Entity.Usuario usuario = comercio.getUsuario();
+        com.senac.ProjetoPontos.Domain.Entity.Endereco endereco = usuario.getEndereco();
+        ComercioUserRequest request = new ComercioUserRequest();
+        request.setCnpj(comercio.getCnpj());
+        request.setRazaoSocial(comercio.getRazaoSocial());
+        request.setDescricao(comercio.getDescricao());
+        request.setSeguimento(comercio.getSeguimento());
+        request.setNome(usuario.getNome());
+        request.setEmail(usuario.getEmail());
+        request.setPerfilUsuario(usuario.getPerfilUsuario());
+        request.setFotoUsuario(usuario.getFotoUsuario());
+        if (endereco != null) {
+            request.setCep(endereco.getCep());
+            request.setLogradouro(endereco.getLogradouro());
+            request.setComplemento(endereco.getComplemento());
+            request.setBairro(endereco.getBairro());
+            request.setCidade(endereco.getCidade());
+            request.setNumero(endereco.getNumero());
+            request.setUf(endereco.getUf());
+        }
+        return request;
+    }
 }
