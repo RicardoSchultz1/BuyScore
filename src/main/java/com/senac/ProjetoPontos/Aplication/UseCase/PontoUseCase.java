@@ -161,4 +161,24 @@ public class PontoUseCase {
             })
             .collect(java.util.stream.Collectors.toList());
     }
+
+    public int obterPontosClienteComercio(UUID clienteId, UUID comercioId) {
+        Cliente cliente = clienteRepository.findById(clienteId);
+        
+        if (cliente == null) {
+            return 0;
+        }
+
+        Comercio comercio = comercioRepository.findById(comercioId);
+        
+        if (comercio == null) {
+            return 0;
+        }
+
+        ClientePontoComercio pontos = clientePontoComercioRepository
+            .findByClienteAndComercio(cliente, comercio)
+            .orElse(null);
+
+        return pontos != null ? pontos.getPontos() : 0;
+    }
 }

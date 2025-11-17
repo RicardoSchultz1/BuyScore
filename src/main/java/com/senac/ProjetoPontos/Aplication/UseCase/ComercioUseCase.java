@@ -182,6 +182,21 @@ public class ComercioUseCase {
         return comercioRepository.findTop5FromEachSector();
     }
 
+    // Buscar comercios por seguimento com limite (sem outros filtros)
+    public List<Comercio> buscarComerciosPorSeguimentoComLimite(String seguimento, int limite) {
+        if (seguimento == null || seguimento.trim().isEmpty()) {
+            throw new IllegalArgumentException("Seguimento não pode ser vazio");
+        }
+        if (limite <= 0) {
+            throw new IllegalArgumentException("Limite deve ser maior que zero");
+        }
+
+        return findAll().stream()
+                .filter(c -> seguimento.equalsIgnoreCase(c.getSeguimento()))
+                .limit(limite)
+                .collect(java.util.stream.Collectors.toList());
+    }
+
     // Método específico para buscar os top 5 dos 3 setores mencionados
     public List<Comercio> buscarTop5RestauranteFarmaciaOutros() {
         List<String> setores = List.of("restaurante", "farmacia", "outros");

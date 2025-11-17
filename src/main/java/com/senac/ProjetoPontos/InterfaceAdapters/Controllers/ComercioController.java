@@ -130,4 +130,39 @@ public class ComercioController {
             return ResponseEntity.internalServerError().build();
         }
     }
+
+    @GetMapping("/top-seguimento")
+    public ResponseEntity<List<ComercioComPontosResponse>> buscarTopComerciosPorSeguimento(
+            @RequestParam String seguimento, 
+            @RequestParam int limite,
+            Authentication authentication) {
+        try {
+            UsuarioDetails userDetails = (UsuarioDetails) authentication.getPrincipal();
+            UUID clienteId = userDetails.getUsuario().getId();
+            
+            List<Comercio> comercios = useCase.buscarComerciosPorSeguimentoComLimite(seguimento, limite);
+            
+            List<ComercioComPontosResponse> response = comercios.stream()
+                .map(comercio -> {
+                    String fotoUsuario = comercio.getUsuario() != null ? comercio.getUsuario().getFotoUsuario() : null;
+                    int pontos = pontoUseCase.obterPontosClienteComercio(clienteId, comercio.getId());
+                    
+                    return new ComercioComPontosResponse(
+                        comercio.getId(),
+                        comercio.getRazaoSocial(),
+                        comercio.getDescricao(),
+                        comercio.getSeguimento(),
+                        fotoUsuario,
+                        pontos
+                    );
+                })
+                .collect(java.util.stream.Collectors.toList());
+            
+            return ResponseEntity.ok(response);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
+    }
 }
