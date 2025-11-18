@@ -139,24 +139,33 @@ public class ComercioController {
         try {
             UsuarioDetails userDetails = (UsuarioDetails) authentication.getPrincipal();
             UUID usuarioId = userDetails.getUsuario().getId();
-            
+
             List<Comercio> comercios = useCase.buscarComerciosPorSeguimentoComLimite(seguimento, limite);
-            
-            List<ComercioComPontosResponse> response = comercios.stream()
-                .map(comercio -> {
-                    int pontos = pontoUseCase.obterPontosPorUsuario(usuarioId, comercio.getId());
-                    String foto = comercio.getUsuario() != null ? comercio.getUsuario().getFotoUsuario() : null;
-                    return new ComercioComPontosResponse(
-                        comercio.getId(),
-                        comercio.getRazaoSocial(),
-                        comercio.getDescricao(),
-                        comercio.getSeguimento(),
-                        foto,
-                        pontos
-                    );
-                })
-                .collect(java.util.stream.Collectors.toList());
-            
+
+            List<ComercioComPontosResponse> response;
+            if (comercios == null) {
+                response = java.util.Collections.emptyList();
+            } else {
+                response = comercios.stream()
+                    .map(comercio -> {
+                        try {
+                            int pontos = pontoUseCase.obterPontosPorUsuario(usuarioId, comercio.getId());
+                            String foto = (comercio.getUsuario() != null) ? comercio.getUsuario().getFotoUsuario() : null;
+                            return new ComercioComPontosResponse(
+                                comercio.getId(),
+                                comercio.getRazaoSocial(),
+                                comercio.getDescricao(),
+                                comercio.getSeguimento(),
+                                foto,
+                                pontos
+                            );
+                        } catch (Exception ex) {
+                            return null;
+                        }
+                    })
+                    .filter(java.util.Objects::nonNull)
+                    .collect(java.util.stream.Collectors.toList());
+            }
             return ResponseEntity.ok(response);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().build();
