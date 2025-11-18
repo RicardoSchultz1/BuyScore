@@ -181,4 +181,20 @@ public class PontoUseCase {
 
         return pontos != null ? pontos.getPontos() : 0;
     }
+
+    // Versão baseada em usuarioId (mais comum nos controllers autenticados)
+    public int obterPontosPorUsuario(UUID usuarioId, UUID comercioId) {
+        Cliente cliente = clienteRepository.findByUsuarioId(usuarioId);
+        if (cliente == null) {
+            return 0; // usuário não é cliente ou não encontrado
+        }
+        Comercio comercio = comercioRepository.findById(comercioId);
+        if (comercio == null) {
+            return 0;
+        }
+        ClientePontoComercio pontos = clientePontoComercioRepository
+            .findByClienteAndComercio(cliente, comercio)
+            .orElse(null);
+        return pontos != null ? pontos.getPontos() : 0;
+    }
 }

@@ -89,5 +89,22 @@ public class ClienteUserRequest {
     public void setUf(String uf) {
         this.uf = uf;
     }
+
+    public static ClienteUserRequest fromCliente(com.senac.ProjetoPontos.Domain.Entity.Cliente cliente) {
+        ClienteUserRequest dto = new ClienteUserRequest();
+        dto.setNome(cliente.getUsuario().getNome());
+        dto.setEmail(cliente.getUsuario().getEmail());
+        dto.setSenha(cliente.getUsuario().getSenha());
+        dto.setPerfilUsuario(cliente.getUsuario().getPerfilUsuario());
+        dto.setFotoUsuario(cliente.getUsuario().getFotoUsuario());
+        dto.setCep(cliente.getUsuario().getEndereco().getCep());
+        dto.setLogradouro(cliente.getUsuario().getEndereco().getLogradouro());
+        dto.setComplemento(cliente.getUsuario().getEndereco().getComplemento());
+        dto.setBairro(cliente.getUsuario().getEndereco().getBairro());
+        dto.setCidade(cliente.getUsuario().getEndereco().getCidade());
+        dto.setNumero(cliente.getUsuario().getEndereco().getNumero());
+        dto.setUf(cliente.getUsuario().getEndereco().getUf());
+        return dto;
+    }
     
 }

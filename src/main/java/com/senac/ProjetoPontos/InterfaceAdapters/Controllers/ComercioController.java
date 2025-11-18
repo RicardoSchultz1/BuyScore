@@ -138,21 +138,20 @@ public class ComercioController {
             Authentication authentication) {
         try {
             UsuarioDetails userDetails = (UsuarioDetails) authentication.getPrincipal();
-            UUID clienteId = userDetails.getUsuario().getId();
+            UUID usuarioId = userDetails.getUsuario().getId();
             
             List<Comercio> comercios = useCase.buscarComerciosPorSeguimentoComLimite(seguimento, limite);
             
             List<ComercioComPontosResponse> response = comercios.stream()
                 .map(comercio -> {
-                    String fotoUsuario = comercio.getUsuario() != null ? comercio.getUsuario().getFotoUsuario() : null;
-                    int pontos = pontoUseCase.obterPontosClienteComercio(clienteId, comercio.getId());
-                    
+                    int pontos = pontoUseCase.obterPontosPorUsuario(usuarioId, comercio.getId());
+                    String foto = comercio.getUsuario() != null ? comercio.getUsuario().getFotoUsuario() : null;
                     return new ComercioComPontosResponse(
                         comercio.getId(),
                         comercio.getRazaoSocial(),
                         comercio.getDescricao(),
                         comercio.getSeguimento(),
-                        fotoUsuario,
+                        foto,
                         pontos
                     );
                 })

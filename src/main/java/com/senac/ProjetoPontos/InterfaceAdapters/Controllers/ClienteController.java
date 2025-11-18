@@ -19,6 +19,7 @@ import com.senac.ProjetoPontos.Infrastructure.Security.JwtUtil;
 import com.senac.ProjetoPontos.Infrastructure.Security.UsuarioDetails;
 import com.senac.ProjetoPontos.InterfaceAdapters.DTO.ClienteUserRequest;
 import com.senac.ProjetoPontos.InterfaceAdapters.DTO.ClienteWithTokenResponse;
+import com.senac.ProjetoPontos.InterfaceAdapters.DTO.ComercioUserRequest;
 import com.senac.ProjetoPontos.InterfaceAdapters.DTO.TokenResponse;
 
 @RestController
@@ -133,5 +134,14 @@ public class ClienteController {
         clienteService.removerProdutoFavorito(clienteService.buscarClientePorUsuarioId(userDetails.getUsuario().getId()).getId(), produtoId);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping
+    public ClienteUserRequest buscarClienteByToken(Authentication authentication) {
+        UUID id = ((UsuarioDetails) authentication.getPrincipal()).getUsuario().getId();
+        Cliente cliente = clienteService.buscarClientePorUsuarioId(id);
+        return ClienteUserRequest.fromCliente(cliente);
+    }
+
+
 
 }
