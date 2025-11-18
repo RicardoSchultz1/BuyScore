@@ -94,9 +94,10 @@ public class ClienteController {
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }*/
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Void> updateCliente(@PathVariable UUID id, @RequestBody Cliente cliente) {
-        cliente.setId(id);
+    @PutMapping
+    public ResponseEntity<Void> updateCliente(@RequestBody Cliente cliente, Authentication authentication) {
+        UsuarioDetails userDetails = (UsuarioDetails) authentication.getPrincipal();
+        cliente.setId(clienteService.buscarClientePorUsuarioId(userDetails.getUsuario().getId()).getId());
         clienteService.atualizarCliente(cliente);
         return ResponseEntity.noContent().build();
     }

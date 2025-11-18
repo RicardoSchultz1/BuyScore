@@ -80,6 +80,7 @@ public class ClienteUseCase {
     }
 
     public void atualizarCliente(Cliente cliente) {
+        cliente.setUsuario(clienteRepository.findById(cliente.getId()).getUsuario());
         clienteRepository.update(cliente);
     }
     public void deletarCliente(UUID id) {

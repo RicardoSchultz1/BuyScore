@@ -36,7 +36,7 @@ public class CompraController {
         String codigo = compraUseCase.criarCompraComCodigo(
             clienteUseCase.buscarClientePorUsuarioId(usuarioId).getId(), 
             request.getProdutoId(), 
-            request.getQuantidade()
+            1
         );
         return ResponseEntity.status(HttpStatus.CREATED).body(codigo);
     }
